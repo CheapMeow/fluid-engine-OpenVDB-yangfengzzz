@@ -11,7 +11,7 @@
 #include "../src.common/sphere3.h"
 #include "../src.common/volume_grid_emitter3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

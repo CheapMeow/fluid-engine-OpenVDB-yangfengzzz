@@ -7,7 +7,7 @@
 #include "../src.vdb/vdb_cell_centered_scalar_grid3.h"
 #include "../src.vdb/vdb_math_utils.h"
 #include "../src.vdb/vdb_helper.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vdb;
@@ -251,9 +251,9 @@ TEST(CellCenteredScalarGrid3, Fill) {
     CellCenteredScalarGrid3 grid(5, 4, 6, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0);
     grid.fill(42.0, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(42.0, grid(openvdb::Coord(i, j, k)));
             }
         }
@@ -262,9 +262,9 @@ TEST(CellCenteredScalarGrid3, Fill) {
     auto func = [](const vox::Vector3D& x) { return x.sum(); };
     grid.fill(func, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(
                                  static_cast<double>(i + j + k) + 1.5,
                                  grid(openvdb::Coord(i, j, k)));
@@ -278,9 +278,9 @@ TEST(CellCenteredScalarGrid3, GradientAtDataPoint) {
     
     grid.fill(1.0, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 vox::Vector3D grad = grid.gradientAtDataPoint(openvdb::Coord(i, j, k));
                 EXPECT_DOUBLE_EQ(0.0, grad.x);
                 EXPECT_DOUBLE_EQ(0.0, grad.y);
@@ -292,9 +292,9 @@ TEST(CellCenteredScalarGrid3, GradientAtDataPoint) {
     grid.fill([](const vox::Vector3D& x) { return x.x + 2.0 * x.y - 3.0 * x.z; },
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 1; k < grid.resolution().z - 1; ++k) {
-        for (uint j = 1; j < grid.resolution().y - 1; ++j) {
-            for (uint i = 1; i < grid.resolution().x - 1; ++i) {
+    for (unsigned int k = 1; k < grid.resolution().z - 1; ++k) {
+        for (unsigned int j = 1; j < grid.resolution().y - 1; ++j) {
+            for (unsigned int i = 1; i < grid.resolution().x - 1; ++i) {
                 vox::Vector3D grad = grid.gradientAtDataPoint(openvdb::Coord(i, j, k));
                 EXPECT_DOUBLE_EQ(1.0, grad.x);
                 EXPECT_DOUBLE_EQ(2.0, grad.y);
@@ -309,9 +309,9 @@ TEST(CellCenteredScalarGrid3, LaplacianAtAtDataPoint) {
     
     grid.fill(1.0, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 EXPECT_DOUBLE_EQ(0.0, grid.laplacianAtDataPoint(openvdb::Coord(i, j, k)));
             }
         }
@@ -321,9 +321,9 @@ TEST(CellCenteredScalarGrid3, LaplacianAtAtDataPoint) {
         return vox::square(x.x) + 2.0 * vox::square(x.y) - 4.0 * vox::square(x.z);
     }, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 1; k < grid.resolution().z - 1; ++k) {
-        for (uint j = 1; j < grid.resolution().y - 1; ++j) {
-            for (uint i = 1; i < grid.resolution().x - 1; ++i) {
+    for (unsigned int k = 1; k < grid.resolution().z - 1; ++k) {
+        for (unsigned int j = 1; j < grid.resolution().y - 1; ++j) {
+            for (unsigned int i = 1; i < grid.resolution().x - 1; ++i) {
                 EXPECT_DOUBLE_EQ(-2.0, grid.laplacianAtDataPoint(openvdb::Coord(i, j, k)));
             }
         }

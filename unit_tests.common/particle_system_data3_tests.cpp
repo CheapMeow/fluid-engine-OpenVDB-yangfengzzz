@@ -6,7 +6,7 @@
 
 #include "../src.common/particle_system_data3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #include <vector>
 

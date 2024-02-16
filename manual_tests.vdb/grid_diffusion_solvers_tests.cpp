@@ -29,7 +29,7 @@ JET_BEGIN_TEST_F(GridForwardEulerDiffusionSolver3, Solve) {
         return ((x-src.boundingBox().midPoint()).length() < 0.2) ? 1.0 : 0.0;
     }, vox::ExecutionPolicy::kSerial);
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src(openvdb::Coord(i, j, 75));
     });
     
@@ -43,7 +43,7 @@ JET_BEGIN_TEST_F(GridForwardEulerDiffusionSolver3, Solve) {
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -62,7 +62,7 @@ JET_BEGIN_TEST_F(GridForwardEulerDiffusionSolver3, Unstable) {
     }, vox::ExecutionPolicy::kSerial);
     
     vox::Array2<double> data(160, 120);
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src(openvdb::Coord(i, j, 75) );
     });
     
@@ -80,7 +80,7 @@ JET_BEGIN_TEST_F(GridForwardEulerDiffusionSolver3, Unstable) {
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -102,7 +102,7 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, Solve) {
     }, vox::ExecutionPolicy::kSerial);
     
     vox::Array2<double> data(160, 120);
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -116,7 +116,7 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, Solve) {
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -135,7 +135,7 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, Stable) {
     }, vox::ExecutionPolicy::kSerial);
     
     vox::Array2<double> data(160, 120);
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -153,7 +153,7 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, Stable) {
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = src.getGrid()->tree().getValue(openvdb::Coord(i, j, 75) );
     });
     
@@ -183,8 +183,8 @@ JET_BEGIN_TEST_F(
         return ((x- src.boundingBox().midPoint()).length() < 0.2) ? 1.0 : 0.0;
     }, vox::ExecutionPolicy::kSerial);
     
-    data.forEachIndex([&](uint i, uint j) {
-        data(i, j) = src(openvdb::Coord(i, j, (uint)size.z / 2) );
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
+        data(i, j) = src(openvdb::Coord(i, j, (unsigned int)size.z / 2) );
     });
     
     double timeStep = 0.01;
@@ -198,8 +198,8 @@ JET_BEGIN_TEST_F(
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
-        data(i, j) = src(openvdb::Coord(i, j, (uint)size.z / 2) );
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
+        data(i, j) = src(openvdb::Coord(i, j, (unsigned int)size.z / 2) );
     });
     
     saveData(data.constAccessor(), "dst_#grid2.npy");
@@ -225,8 +225,8 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, SolveWithBoundaryNeumann) {
         return ((x- src.boundingBox().midPoint()).length() < 0.2) ? 1.0 : 0.0;
     }, vox::ExecutionPolicy::kSerial);
     
-    data.forEachIndex([&](uint i, uint j) {
-        data(i, j) = src(openvdb::Coord(i, j, (uint)size.z / 2) );
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
+        data(i, j) = src(openvdb::Coord(i, j, (unsigned int)size.z / 2) );
     });
     
     double timeStep = 0.01;
@@ -240,8 +240,8 @@ JET_BEGIN_TEST_F(GridBackwardEulerDiffusionSolver3, SolveWithBoundaryNeumann) {
     
     saveData(data.constAccessor(), "src_#grid2.npy");
     
-    data.forEachIndex([&](uint i, uint j) {
-        data(i, j) = src(openvdb::Coord(i, j, (uint)size.z / 2) );
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
+        data(i, j) = src(openvdb::Coord(i, j, (unsigned int)size.z / 2) );
     });
     
     saveData(data.constAccessor(), "dst_#grid2.npy");

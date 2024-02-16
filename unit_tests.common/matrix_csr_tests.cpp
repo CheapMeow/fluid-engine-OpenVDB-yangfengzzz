@@ -8,7 +8,7 @@
 #include "../src.common/matrix_mxn.h"
 #include "../src.common/vector_n.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -10,7 +10,7 @@
 #include "../src.common/bounding_box3.h"
 #include "../src.common/point_kdtree_searcher3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #include <vector>
 

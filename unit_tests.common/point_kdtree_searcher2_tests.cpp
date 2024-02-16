@@ -10,7 +10,7 @@
 #include "../src.common/point_kdtree_searcher2.h"
 #include "../src.common/triangle_point_generator.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -10,7 +10,7 @@
 #include "../src.common/surface_to_implicit2.h"
 #include "../src.common/volume_particle_emitter2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

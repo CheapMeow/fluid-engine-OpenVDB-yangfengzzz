@@ -17,7 +17,7 @@
 #include "../src.vdb/vdb_particle_system_data3.hpp"
 
 #include "cnpy.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include "pystring.h"
 
 #include <fstream>

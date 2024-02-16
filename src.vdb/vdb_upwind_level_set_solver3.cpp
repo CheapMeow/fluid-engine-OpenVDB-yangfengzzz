@@ -20,21 +20,21 @@ UpwindLevelSetSolver3::UpwindLevelSetSolver3() {
 
 void UpwindLevelSetSolver3::getDerivatives(vox::ConstArrayAccessor3<double> grid,
                                            const vox::Vector3D& gridSpacing,
-                                           uint i,
-                                           uint j,
-                                           uint k,
+                                           unsigned int i,
+                                           unsigned int j,
+                                           unsigned int k,
                                            std::array<double, 2>* dx,
                                            std::array<double, 2>* dy,
                                            std::array<double, 2>* dz) const {
     double D0[3];
     vox::Size3 size = grid.size();
     
-    const uint im1 = (i < 1) ? 0 : i - 1;
-    const uint ip1 = std::min(i + 1, (uint)size.x - 1);
-    const uint jm1 = (j < 1) ? 0 : j - 1;
-    const uint jp1 = std::min(j + 1, (uint)size.y - 1);
-    const uint km1 = (k < 1) ? 0 : k - 1;
-    const uint kp1 = std::min(k + 1, (uint)size.z - 1);
+    const unsigned int im1 = (i < 1) ? 0 : i - 1;
+    const unsigned int ip1 = std::min(i + 1, (unsigned int)size.x - 1);
+    const unsigned int jm1 = (j < 1) ? 0 : j - 1;
+    const unsigned int jp1 = std::min(j + 1, (unsigned int)size.y - 1);
+    const unsigned int km1 = (k < 1) ? 0 : k - 1;
+    const unsigned int kp1 = std::min(k + 1, (unsigned int)size.z - 1);
     
     D0[0] = grid(im1, j, k);
     D0[1] = grid(i, j, k);

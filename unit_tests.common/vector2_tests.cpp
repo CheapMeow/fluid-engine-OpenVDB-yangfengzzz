@@ -6,7 +6,7 @@
 
 #include "../src.common/vector3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <algorithm>
 
 using namespace vox;

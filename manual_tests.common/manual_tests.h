@@ -13,7 +13,7 @@
 #include "../src.common/triangle_mesh3.h"
 
 #include "cnpy.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include "pystring.h"
 
 #include <fstream>

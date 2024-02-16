@@ -7,7 +7,7 @@
 #include "../src.vdb/vdb_cell_centered_scalar_grid3.h"
 #include "../src.vdb/vdb_forward_euler_diffusion_solver3.hpp"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

@@ -8,7 +8,7 @@
 #define SRC_TESTS_UNIT_TESTS_UNIT_TESTS_UTILS_H_
 
 #include "../src.common/vector3.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #define EXPECT_VECTOR2_EQ(expected, actual)     \
 EXPECT_DOUBLE_EQ((expected).x, (actual).x); \

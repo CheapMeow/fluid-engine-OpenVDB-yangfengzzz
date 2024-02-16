@@ -11,7 +11,7 @@
 #include "../src.common/point_hash_grid_searcher3.h"
 #include "../src.common/point_parallel_hash_grid_searcher3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vox;

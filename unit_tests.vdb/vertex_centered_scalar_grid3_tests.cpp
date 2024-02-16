@@ -7,7 +7,7 @@
 #include "../src.vdb/vdb_vertex_centered_scalar_grid3.h"
 #include "../src.vdb/vdb_math_utils.h"
 #include "../src.vdb/vdb_helper.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vdb;
@@ -254,9 +254,9 @@ TEST(VertexCenteredScalarGrid3, Fill) {
     VertexCenteredScalarGrid3 grid(5, 4, 6, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0);
     grid.fill(42.0, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(42.0, grid(openvdb::Coord(i, j, k)));
             }
         }
@@ -272,9 +272,9 @@ TEST(VertexCenteredScalarGrid3, Fill) {
     
     grid.fill(func, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 if (i < 3) {
                     EXPECT_DOUBLE_EQ(2.0, grid(openvdb::Coord(i, j, k)));
                 } else {

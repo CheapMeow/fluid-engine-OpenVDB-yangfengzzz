@@ -28,7 +28,7 @@ inline double solveQuadNearBoundary(const vox::Array3<char>& markers,
                                     const vox::Vector3D& gridSpacing,
                                     const vox::Vector3D& invGridSpacingSqr,
                                     double sign,
-                                    uint i, uint j, uint k) {
+                                    unsigned int i, unsigned int j, unsigned int k) {
     UNUSED_VARIABLE(markers);
     UNUSED_VARIABLE(invGridSpacingSqr);
     
@@ -120,7 +120,7 @@ inline double solveQuad(const vox::Array3<char>& markers,
                         openvdb::DoubleGrid::Ptr output,
                         const vox::Vector3D& gridSpacing,
                         const vox::Vector3D& invGridSpacingSqr,
-                        uint i, uint j, uint k) {
+                        unsigned int i, unsigned int j, unsigned int k) {
     vox::Size3 size = markers.size();
     
     bool hasX = false;
@@ -232,14 +232,14 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
     vox::Vector3D invGridSpacingSqr = invGridSpacing * invGridSpacing;
     vox::Array3<char> markers(size);
     
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         outputSdf->getGrid()->tree().setValueOnly(coord, inputSdf.getGrid()->tree().getValue(coord));
     });
     
     auto output = outputSdf->getGrid()->treePtr();
     // Solve geometrically near the boundary
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(output->getValue(openvdb::Coord(i, j, k))) &&
             ((i > 0
               && !vox::isInsideSdf(output->getValue(openvdb::Coord(i - 1, j, k)))) ||
@@ -263,7 +263,7 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
         }
     });
     
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (!vox::isInsideSdf(output->getValue(openvdb::Coord(i, j, k))) &&
             ((i > 0
               && vox::isInsideSdf(output->getValue(openvdb::Coord(i - 1, j, k)))) ||
@@ -289,7 +289,7 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
     
     for (int sign = 0; sign < 2; ++sign) {
         // Build markers
-        markers.parallelForEachIndex([&](uint i, uint j, uint k) {
+        markers.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             if (vox::isInsideSdf(output->getValue(openvdb::Coord(i, j, k)))) {
                 markers(i, j, k) = kKnown;
             } else {
@@ -304,7 +304,7 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
         // Enqueue initial candidates
         std::priority_queue<openvdb::Coord, std::vector<openvdb::Coord>, decltype(compare)>
         trial(compare);
-        markers.forEachIndex([&](uint i, uint j, uint k) {
+        markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             if (markers(i, j, k) != kKnown &&
                 ((i > 0 && markers(i - 1, j, k) == kKnown) ||
                  (i + 1 < size.x && markers(i + 1, j, k) == kKnown) ||
@@ -322,9 +322,9 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
             openvdb::Coord idx = trial.top();
             trial.pop();
             
-            uint i = idx.x();
-            uint j = idx.y();
-            uint k = idx.z();
+            unsigned int i = idx.x();
+            unsigned int j = idx.y();
+            unsigned int k = idx.z();
             
             markers(i, j, k) = kKnown;
             output->setValueOnly(idx, solveQuad(markers, outputSdf->getGrid(),
@@ -415,7 +415,7 @@ void FmmLevelSetSolver3::reinitialize(const ScalarGrid3& inputSdf,
         }
         
         // Flip the sign
-        markers.parallelForEachIndex([&](uint i, uint j, uint k) {
+        markers.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             openvdb::Coord coord(i, j, k);
             output->setValueOnly(coord, -output->getValue(coord));
         });
@@ -429,7 +429,7 @@ void FmmLevelSetSolver3::extrapolate(const ScalarGrid3& input,
     
     vox::Array3<double> sdfGrid(input.dataSize());
     auto pos = input.dataPosition();
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfGrid(i, j, k) = sdf.sample(pos(openvdb::Coord(i, j, k)));
     });
     
@@ -446,7 +446,7 @@ void FmmLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     
     vox::Array3<double> sdfGrid(input.dataSize());
     auto pos = input.dataPosition();
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfGrid(i, j, k) = sdf.sample(pos(openvdb::Coord(i, j, k)));
     });
     
@@ -465,7 +465,7 @@ void FmmLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     openvdb::DoubleGrid::Ptr w0 = openvdb::DoubleGrid::create(0.0);
     w0->topologyUnion(*input.getGrid());
     
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         u->tree().setValueOnly(coord, input.getGrid()->tree().getValue(coord).x());
         v->tree().setValueOnly(coord, input.getGrid()->tree().getValue(coord).y());
@@ -478,7 +478,7 @@ void FmmLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     
     extrapolate(w, sdfGrid, gridSpacing, maxDistance, w0);
     
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         output->getGrid()->tree().setValueOnly(coord,
                                                openvdb::Vec3d(u->tree().getValue(coord),
@@ -497,7 +497,7 @@ void FmmLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     auto uPos = input.uPosition();
     
     vox::Array3<double> sdfAtU(input.uSize());
-    sdfAtU.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtU.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtU(i, j, k) = sdf.sample(uPos(openvdb::Coord(i, j, k)));
     });
     
@@ -508,7 +508,7 @@ void FmmLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     auto vPos = input.vPosition();
     
     vox::Array3<double> sdfAtV(input.vSize());
-    sdfAtV.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtV.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtV(i, j, k) = sdf.sample(vPos(openvdb::Coord(i, j, k)));
     });
     
@@ -519,7 +519,7 @@ void FmmLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     auto wPos = input.wPosition();
     
     vox::Array3<double> sdfAtW(input.wSize());
-    sdfAtW.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtW.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtW(i, j, k) = sdf.sample(wPos(openvdb::Coord(i, j, k)));
     });
     
@@ -538,7 +538,7 @@ void FmmLevelSetSolver3::extrapolate(const openvdb::DoubleGrid::Ptr& input,
     
     // Build markers
     vox::Array3<char> markers(size, kUnknown);
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(sdf(i, j, k))) {
             markers(i, j, k) = kKnown;
         }
@@ -554,7 +554,7 @@ void FmmLevelSetSolver3::extrapolate(const openvdb::DoubleGrid::Ptr& input,
     std::priority_queue<openvdb::Coord, std::vector<openvdb::Coord>, decltype(compare)>
     trial(compare);
     
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (markers(i, j, k) == kKnown) {
             return;
         }

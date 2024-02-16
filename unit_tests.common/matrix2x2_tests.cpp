@@ -6,7 +6,7 @@
 
 #include "../src.common/matrix2x2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -6,8 +6,8 @@
 
 #include "manual_tests.h"
 #include <openvdb/openvdb.h>
-#include "../external/gtest/include/gtest/gtest.h"
-#include "../external/Eigen/Core"
+#include "gtest/gtest.h"
+#include "Eigen/Core"
 #include <fstream>
 
 using namespace vox;

@@ -15,7 +15,7 @@
 #include "../src.common/upwind_level_set_solver2.h"
 #include "../src.common/upwind_level_set_solver3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

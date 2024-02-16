@@ -4,6 +4,8 @@
 // personal capacity and am not conveying any rights to any intellectual
 // property of any third parties.
 
+#define _USE_MATH_DEFINES
+
 #include "manual_tests.h"
 
 #include <array>

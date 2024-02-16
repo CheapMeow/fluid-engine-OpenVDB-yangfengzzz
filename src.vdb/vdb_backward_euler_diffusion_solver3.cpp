@@ -33,7 +33,7 @@ void BackwardEulerDiffusionSolver3::buildMarkers(
                                                  const vox::ScalarField3& fluidSdf) {
     _markers.resize(size);
     
-    _markers.parallelForEachIndex([&](uint i, uint j, uint k) {
+    _markers.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(boundarySdf.sample(pos(openvdb::Coord(i, j, k))))) {
             _markers(i, j, k) = kBoundary;
         } else if (vox::isInsideSdf(fluidSdf.sample(pos(openvdb::Coord(i, j, k))))) {
@@ -124,7 +124,7 @@ void BackwardEulerDiffusionSolver3::buildVectors(
     
     // Build linear system
     _system.x.parallelForEachIndex(
-                                   [&](uint i, uint j, uint k) {
+                                   [&](unsigned int i, unsigned int j, unsigned int k) {
         _system.b(i, j, k) = _system.x(i, j, k) = f->tree().getValue(openvdb::Coord(i, j, k));
         
         if (_boundaryType == Dirichlet && _markers(i, j, k) == kFluid) {
@@ -159,13 +159,13 @@ void BackwardEulerDiffusionSolver3::buildVectors(
                                                  const openvdb::Vec3dGrid::Ptr f,
                                                  const vox::Size3 size,
                                                  const vox::Vector3D& c,
-                                                 uint component) {
+                                                 unsigned int component) {
     _system.x.resize(size, 0.0);
     _system.b.resize(size, 0.0);
     
     // Build linear system
     _system.x.parallelForEachIndex(
-                                   [&](uint i, uint j, uint k) {
+                                   [&](unsigned int i, unsigned int j, unsigned int k) {
         _system.b(i, j, k) = _system.x(i, j, k) = f->tree().getValue(openvdb::Coord(i, j, k))[component];
         
         if (_boundaryType == Dirichlet && _markers(i, j, k) == kFluid) {
@@ -217,7 +217,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             openvdb::Coord coord(i, j, k);
             (*dest).getGrid()->tree().setValueOnly(coord, _system.x(i, j, k));
         });
@@ -249,7 +249,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             result(i, j, k).x() = _system.x(i, j, k);
         });
     }
@@ -262,7 +262,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             result(i, j, k).y() = _system.x(i, j, k);
         });
     }
@@ -275,12 +275,12 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             result(i, j, k).z() = _system.x(i, j, k);
         });
     }
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         dest->getGrid()->tree().setValueOnly(coord, result(i, j, k));
     });
@@ -307,7 +307,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             openvdb::Coord coord(i, j, k);
             dest->getUGrid()->tree().setValueOnly(coord, _system.x(i, j, k));
         });
@@ -324,7 +324,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             openvdb::Coord coord(i, j, k);
             dest->getVGrid()->tree().setValueOnly(coord, _system.x(i, j, k));
         });
@@ -341,7 +341,7 @@ void BackwardEulerDiffusionSolver3::solve(
         _systemSolver->solve(&_system);
         
         // Assign the solution
-        _markers.forEachIndex([&](uint i, uint j, uint k) {
+        _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             openvdb::Coord coord(i, j, k);
             dest->getWGrid()->tree().setValueOnly(coord, _system.x(i, j, k));
         });

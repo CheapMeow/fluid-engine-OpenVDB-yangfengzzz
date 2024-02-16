@@ -65,7 +65,7 @@ public:
     //! grid cell. The order of execution is i-first, j-next, k-last.
     //!
     void forEachCellIndex(
-                          const std::function<void(uint, uint, uint)>& func) const;
+                          const std::function<void(unsigned int, unsigned int, unsigned int)>& func) const;
     
     //!
     //! \brief Invokes the given function \p func for each grid cell parallelly.
@@ -76,7 +76,7 @@ public:
     //! multi-threaded.
     //!
     void parallelForEachCellIndex(
-                                  const std::function<void(uint, uint, uint)>& func) const;
+                                  const std::function<void(unsigned int, unsigned int, unsigned int)>& func) const;
     
     //! Returns true if resolution, grid-spacing and origin are same.
     bool hasSameShape(const Grid3& other) const;

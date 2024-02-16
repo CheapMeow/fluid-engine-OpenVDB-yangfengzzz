@@ -7,7 +7,7 @@
 #include "../src.common/array1.h"
 #include "../src.common/point_simple_list_searcher2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

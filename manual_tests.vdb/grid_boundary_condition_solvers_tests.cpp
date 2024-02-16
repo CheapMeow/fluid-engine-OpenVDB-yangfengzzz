@@ -49,7 +49,7 @@ JET_BEGIN_TEST_F(GridBlockedBoundaryConditionSolver3, ConstrainVelocitySmall) {
     vox::Array2<double> dataV(10, 10);
     vox::Array2<double> dataM(10, 10);
     
-    dataU.forEachIndex([&](uint i, uint j) {
+    dataU.forEachIndex([&](unsigned int i, unsigned int j) {
         vox::Vector3D vel = velocity.valueAtCellCenter(i, j, 5);
         dataU(i, j) = vel.x;
         dataV(i, j) = vel.y;
@@ -106,7 +106,7 @@ JET_BEGIN_TEST_F(GridBlockedBoundaryConditionSolver3, ConstrainVelocity) {
     vox::Array2<double> dataU(64, 32);
     vox::Array2<double> dataV(64, 32);
     vox::Array2<double> dataM(64, 32);
-    dataU.forEachIndex([&](uint i, uint j) {
+    dataU.forEachIndex([&](unsigned int i, unsigned int j) {
         vox::Vector3D vel = velocity.valueAtCellCenter(i, j, 16);
         dataU(i, j) = vel.x;
         dataV(i, j) = vel.y;
@@ -165,7 +165,7 @@ JET_BEGIN_TEST_F(
     vox::Array2<double> dataU(64, 32);
     vox::Array2<double> dataV(64, 32);
     vox::Array2<double> dataM(64, 32);
-    dataU.forEachIndex([&](uint i, uint j) {
+    dataU.forEachIndex([&](unsigned int i, unsigned int j) {
         vox::Vector3D vel = velocity.valueAtCellCenter(i, j, 16);
         dataU(i, j) = vel.x;
         dataV(i, j) = vel.y;
@@ -226,7 +226,7 @@ JET_BEGIN_TEST_F(
     vox::Array2<double> dataU(64, 32);
     vox::Array2<double> dataV(64, 32);
     
-    dataU.forEachIndex([&](uint i, uint j) {
+    dataU.forEachIndex([&](unsigned int i, unsigned int j) {
         vox::Vector3D vel = velocity.valueAtCellCenter(i, j, 16);
         dataU(i, j) = vel.x;
         dataV(i, j) = vel.y;

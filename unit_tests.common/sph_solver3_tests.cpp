@@ -5,7 +5,7 @@
 // property of any third parties.
 
 #include "../src.common/sph_solver3.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

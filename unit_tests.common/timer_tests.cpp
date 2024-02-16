@@ -6,7 +6,7 @@
 
 #include "../src.common/timer.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <chrono>
 #include <thread>

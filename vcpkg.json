@@ -1,0 +1,16 @@
+{
+    "dependencies": [
+        "glog",
+        "tbb",
+        "openvdb",
+        "gtest",
+        "eigen3"
+    ],
+    "builtin-baseline": "3f6e8e9c09e28a0eae4b37cceb2982ca2518278c",
+    "overrides": [
+        {
+            "name": "tbb",
+            "version-string": "2020_U3#8"
+        }
+    ]
+}

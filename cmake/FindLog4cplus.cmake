@@ -34,6 +34,17 @@ This will define the following variables:
   The version of the Log4cplus library which was found.
 ``Log4cplus_INCLUDE_DIRS``
   Include directories needed to use Log4cplus.
+``Log4cplus_RELEASE_LIBRARIES``
+  Libraries needed to link to the release version of Log4cplus.
+``Log4cplus_RELEASE_LIBRARY_DIRS``
+  Log4cplus release library directories.
+``Log4cplus_DEBUG_LIBRARIES``
+  Libraries needed to link to the debug version of Log4cplus.
+``Log4cplus_DEBUG_LIBRARY_DIRS``
+  Log4cplus debug library directories.
+
+Deprecated - use [RELEASE|DEBUG] variants:
+
 ``Log4cplus_LIBRARIES``
   Libraries needed to link to Log4cplus.
 ``Log4cplus_LIBRARY_DIRS``
@@ -47,7 +58,11 @@ The following cache variables may also be set:
 ``Log4cplus_INCLUDE_DIR``
   The directory containing ``log4cplus/version.h``.
 ``Log4cplus_LIBRARY``
-  The path to the Log4cplus library.
+  The path to the Log4cplus library. may include target_link_libraries() debug/optimized keywords.
+``Log4cplus_LIBRARY_RELEASE``
+  The path to the Log4cplus release library.
+``Log4cplus_LIBRARY_DEBUG``
+  The path to the Log4cplus debug library.
 
 Hints
 ^^^^^
@@ -61,6 +76,8 @@ may be provided to tell this module where to look.
   Preferred include directory e.g. <prefix>/include
 ``LOG4CPLUS_LIBRARYDIR``
   Preferred library directory e.g. <prefix>/lib
+``LOG4CPLUS_DEBUG_SUFFIX``
+  Suffix of the debug version of the log4cplus lib. Defaults to "D".
 ``SYSTEM_LIBRARY_PATHS``
   Global list of library paths intended to be searched by and find_xxx call
 ``LOG4CPLUS_USE_STATIC_LIBS``
@@ -70,12 +87,9 @@ may be provided to tell this module where to look.
 
 #]=======================================================================]
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.18)
+include(GNUInstallDirs)
 
-# Monitoring <PackageName>_ROOT variables
-if(POLICY CMP0074)
-  cmake_policy(SET CMP0074 NEW)
-endif()
 
 mark_as_advanced(
   Log4cplus_INCLUDE_DIR
@@ -102,11 +116,14 @@ elseif(DEFINED ENV{LOG4CPLUS_ROOT})
 endif()
 
 # Additionally try and use pkconfig to find log4cplus
-
-if(NOT DEFINED PKG_CONFIG_FOUND)
-  find_package(PkgConfig)
+if(USE_PKGCONFIG)
+  if(NOT DEFINED PKG_CONFIG_FOUND)
+    find_package(PkgConfig)
+  endif()
+  if(PKG_CONFIG_FOUND)
+    pkg_check_modules(PC_Log4cplus QUIET log4cplus)
+  endif()
 endif()
-pkg_check_modules(PC_Log4cplus QUIET log4cplus)
 
 # ------------------------------------------------------------------------
 #  Search for Log4cplus include DIR
@@ -124,7 +141,7 @@ list(APPEND _LOG4CPLUS_INCLUDE_SEARCH_DIRS
 find_path(Log4cplus_INCLUDE_DIR log4cplus/version.h
   ${_FIND_LOG4CPLUS_ADDITIONAL_OPTIONS}
   PATHS ${_LOG4CPLUS_INCLUDE_SEARCH_DIRS}
-  PATH_SUFFIXES include
+  PATH_SUFFIXES ${CMAKE_INSTALL_INCLUDEDIR} include
 )
 
 if(EXISTS "${Log4cplus_INCLUDE_DIR}/log4cplus/version.h")
@@ -152,6 +169,10 @@ endif()
 #  Search for Log4cplus lib DIR
 # ------------------------------------------------------------------------
 
+if(NOT DEFINED LOG4CPLUS_DEBUG_SUFFIX)
+  set(LOG4CPLUS_DEBUG_SUFFIX D)
+endif()
+
 set(_LOG4CPLUS_LIBRARYDIR_SEARCH_DIRS "")
 list(APPEND _LOG4CPLUS_LIBRARYDIR_SEARCH_DIRS
   ${LOG4CPLUS_LIBRARYDIR}
@@ -160,28 +181,82 @@ list(APPEND _LOG4CPLUS_LIBRARYDIR_SEARCH_DIRS
   ${SYSTEM_LIBRARY_PATHS}
 )
 
+# Library suffix handling
 
-if(UNIX AND LOG4CPLUS_USE_STATIC_LIBS)
-  set(_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES})
-  set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+set(_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES})
+
+if(MSVC)
+  if(LOG4CPLUS_USE_STATIC_LIBS)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".lib")
+  endif()
+else()
+  if(LOG4CPLUS_USE_STATIC_LIBS)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+  endif()
 endif()
 
-# Build suffix directories
+set(Log4cplus_LIB_COMPONENTS "")
+list(APPEND LOG4CPLUS_BUILD_TYPES RELEASE DEBUG)
 
-set(LOG4CPLUS_PATH_SUFFIXES
-  lib64
-  lib
-)
+foreach(BUILD_TYPE ${LOG4CPLUS_BUILD_TYPES})
+  set(_LOG4CPLUS_LIB_NAME log4cplus)
+  if(BUILD_TYPE STREQUAL DEBUG)
+    set(_LOG4CPLUS_LIB_NAME "${_LOG4CPLUS_LIB_NAME}${LOG4CPLUS_DEBUG_SUFFIX}")
+  endif()
 
-find_library(Log4cplus_LIBRARY log4cplus
-  ${_FIND_LOG4CPLUS_ADDITIONAL_OPTIONS}
-  PATHS ${_LOG4CPLUS_LIBRARYDIR_SEARCH_DIRS}
-  PATH_SUFFIXES ${LOG4CPLUS_PATH_SUFFIXES}
-)
+  find_library(Log4cplus_LIBRARY_${BUILD_TYPE} ${_LOG4CPLUS_LIB_NAME}
+    ${_FIND_LOG4CPLUS_ADDITIONAL_OPTIONS}
+    PATHS ${_LOG4CPLUS_LIBRARYDIR_SEARCH_DIRS}
+    PATH_SUFFIXES ${CMAKE_INSTALL_LIBDIR} lib64 lib
+  )
 
-if(UNIX AND LOG4CPLUS_USE_STATIC_LIBS)
-  set(CMAKE_FIND_LIBRARY_SUFFIXES ${_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES})
-  unset(_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES)
+  list(APPEND Log4cplus_LIB_COMPONENTS ${Log4cplus_LIBRARY_${BUILD_TYPE}})
+endforeach()
+
+# Reset library suffix
+
+set(CMAKE_FIND_LIBRARY_SUFFIXES ${_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES})
+unset(_LOG4CPLUS_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES)
+
+if(Log4cplus_LIBRARY_DEBUG AND Log4cplus_LIBRARY_RELEASE)
+  # if the generator is multi-config or if CMAKE_BUILD_TYPE is set for
+  # single-config generators, set optimized and debug libraries
+  get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+  if(_isMultiConfig OR CMAKE_BUILD_TYPE)
+    set(Log4cplus_LIBRARY optimized ${Log4cplus_LIBRARY_RELEASE} debug ${Log4cplus_LIBRARY_DEBUG})
+  else()
+    # For single-config generators where CMAKE_BUILD_TYPE has no value,
+    # just use the release libraries
+    set(Log4cplus_LIBRARY ${Log4cplus_LIBRARY_RELEASE})
+  endif()
+  # FIXME: This probably should be set for both cases
+  set(Log4cplus_LIBRARIES optimized ${Log4cplus_LIBRARY_RELEASE} debug ${Log4cplus_LIBRARY_DEBUG})
+endif()
+
+# if only the release version was found, set the debug variable also to the release version
+if(Log4cplus_LIBRARY_RELEASE AND NOT Log4cplus_LIBRARY_DEBUG)
+  set(Log4cplus_LIBRARY_DEBUG ${Log4cplus_LIBRARY_RELEASE})
+  set(Log4cplus_LIBRARY       ${Log4cplus_LIBRARY_RELEASE})
+  set(Log4cplus_LIBRARIES     ${Log4cplus_LIBRARY_RELEASE})
+endif()
+
+# if only the debug version was found, set the release variable also to the debug version
+if(Log4cplus_LIBRARY_DEBUG AND NOT Log4cplus_LIBRARY_RELEASE)
+  set(Log4cplus_LIBRARY_RELEASE ${Log4cplus_LIBRARY_DEBUG})
+  set(Log4cplus_LIBRARY         ${Log4cplus_LIBRARY_DEBUG})
+  set(Log4cplus_LIBRARIES       ${Log4cplus_LIBRARY_DEBUG})
+endif()
+
+# If the debug & release library ends up being the same, omit the keywords
+if("${Log4cplus_LIBRARY_RELEASE}" STREQUAL "${Log4cplus_LIBRARY_DEBUG}")
+  set(Log4cplus_LIBRARY   ${Log4cplus_LIBRARY_RELEASE} )
+  set(Log4cplus_LIBRARIES ${Log4cplus_LIBRARY_RELEASE} )
+endif()
+
+if(Log4cplus_LIBRARY)
+  set(Log4cplus_FOUND TRUE)
+else()
+  set(Log4cplus_FOUND FALSE)
 endif()
 
 # ------------------------------------------------------------------------
@@ -197,21 +272,73 @@ find_package_handle_standard_args(Log4cplus
   VERSION_VAR Log4cplus_VERSION
 )
 
-if(Log4cplus_FOUND)
-  set(Log4cplus_LIBRARIES ${Log4cplus_LIBRARY})
-  set(Log4cplus_INCLUDE_DIRS ${Log4cplus_INCLUDE_DIR})
-  set(Log4cplus_DEFINITIONS ${PC_Log4cplus_CFLAGS_OTHER})
-
-  get_filename_component(Log4cplus_LIBRARY_DIRS ${Log4cplus_LIBRARY} DIRECTORY)
-
-  if(NOT TARGET Log4cplus::log4cplus)
-    add_library(Log4cplus::log4cplus UNKNOWN IMPORTED)
-    set_target_properties(Log4cplus::log4cplus PROPERTIES
-      IMPORTED_LOCATION "${Log4cplus_LIBRARIES}"
-      INTERFACE_COMPILE_DEFINITIONS "${Log4cplus_DEFINITIONS}"
-      INTERFACE_INCLUDE_DIRECTORIES "${Log4cplus_INCLUDE_DIRS}"
-    )
+if(NOT Log4cplus_FOUND)
+  if(Log4cplus_FIND_REQUIRED)
+    message(FATAL_ERROR "Unable to find Log4cplus")
   endif()
-elseif(Log4cplus_FIND_REQUIRED)
-  message(FATAL_ERROR "Unable to find Log4cplus")
+  return()
+endif()
+
+# Partition release/debug lib vars
+
+set(Log4cplus_RELEASE_LIBRARIES ${Log4cplus_LIBRARY_RELEASE})
+get_filename_component(Log4cplus_RELEASE_LIBRARY_DIRS ${Log4cplus_RELEASE_LIBRARIES} DIRECTORY)
+set(Log4cplus_DEBUG_LIBRARIES ${Log4cplus_LIBRARY_DEBUG})
+get_filename_component(Log4cplus_DEBUG_LIBRARY_DIRS ${Log4cplus_DEBUG_LIBRARIES} DIRECTORY)
+set(Log4cplus_LIBRARIES ${Log4cplus_RELEASE_LIBRARIES})
+set(Log4cplus_LIBRARY_DIRS ${Log4cplus_RELEASE_LIBRARY_DIRS})
+set(Log4cplus_INCLUDE_DIRS ${Log4cplus_INCLUDE_DIR})
+
+# Configure lib type. If XXX_USE_STATIC_LIBS, we always assume a static
+# lib is in use. If win32, we can't mark the import .libs as shared, so
+# these are always marked as UNKNOWN. Otherwise, infer from extension.
+set(LOG4CPLUS_LIB_TYPE UNKNOWN)
+if(LOG4CPLUS_USE_STATIC_LIBS)
+  set(LOG4CPLUS_LIB_TYPE STATIC)
+elseif(UNIX)
+  get_filename_component(_LOG4CPLUS_EXT ${Log4cplus_LIBRARY} EXT)
+  if(_LOG4CPLUS_EXT STREQUAL ".a")
+    set(LOG4CPLUS_LIB_TYPE STATIC)
+  elseif(_LOG4CPLUS_EXT STREQUAL ".so" OR
+         _LOG4CPLUS_EXT STREQUAL ".dylib")
+    set(LOG4CPLUS_LIB_TYPE SHARED)
+  endif()
+endif()
+
+get_filename_component(Log4cplus_LIBRARY_DIRS ${Log4cplus_LIBRARY_RELEASE} DIRECTORY)
+
+if(NOT TARGET Log4cplus::log4cplus)
+  add_library(Log4cplus::log4cplus ${LOG4CPLUS_LIB_TYPE} IMPORTED)
+  set_target_properties(Log4cplus::log4cplus PROPERTIES
+    INTERFACE_COMPILE_OPTIONS "${PC_Log4cplus_CFLAGS_OTHER}"
+    INTERFACE_INCLUDE_DIRECTORIES "${Log4cplus_INCLUDE_DIRS}")
+
+  # Standard location
+  set_target_properties(Log4cplus::log4cplus PROPERTIES
+    IMPORTED_LINK_INTERFACE_LANGUAGES "CXX;RC"
+    IMPORTED_LOCATION "${Log4cplus_LIBRARY}")
+
+  # WIN32 APIs
+  if(WIN32)
+    set_target_properties(Log4cplus::log4cplus PROPERTIES
+      IMPORTED_LINK_INTERFACE_LIBRARIES "ws2_32;advapi32")
+  endif()
+
+  # Release location
+  if(EXISTS "${Log4cplus_LIBRARY_RELEASE}")
+    set_property(TARGET Log4cplus::log4cplus APPEND PROPERTY
+      IMPORTED_CONFIGURATIONS RELEASE)
+    set_target_properties(Log4cplus::log4cplus PROPERTIES
+      IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX;RC"
+      IMPORTED_LOCATION_RELEASE "${Log4cplus_LIBRARY_RELEASE}")
+  endif()
+
+  # Debug location
+  if(EXISTS "${Log4cplus_LIBRARY_DEBUG}")
+    set_property(TARGET Log4cplus::log4cplus APPEND PROPERTY
+      IMPORTED_CONFIGURATIONS DEBUG)
+    set_target_properties(Log4cplus::log4cplus PROPERTIES
+      IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX;RC"
+      IMPORTED_LOCATION_DEBUG "${Log4cplus_LIBRARY_DEBUG}")
+  endif()
 endif()

@@ -6,7 +6,7 @@
 
 #include "../src.common/point.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

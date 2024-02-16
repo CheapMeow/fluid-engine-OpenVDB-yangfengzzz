@@ -30,7 +30,7 @@ GridSmokeSolver3::GridSmokeSolver3(const vox::Size3& resolution,
                    vox::kZeroSize, resolution.x,
                    vox::kZeroSize, resolution.y,
                    vox::kZeroSize, resolution.z,
-                   [&](uint i, uint j, uint k) {
+                   [&](unsigned int i, unsigned int j, unsigned int k) {
         smokeDensity()->getGrid()->tree().setValueOn(openvdb::Coord(i, j, k));
     });
     
@@ -41,7 +41,7 @@ GridSmokeSolver3::GridSmokeSolver3(const vox::Size3& resolution,
                    vox::kZeroSize, resolution.x,
                    vox::kZeroSize, resolution.y,
                    vox::kZeroSize, resolution.z,
-                   [&](uint i, uint j, uint k) {
+                   [&](unsigned int i, unsigned int j, unsigned int k) {
         temperature()->getGrid()->tree().setValueOn(openvdb::Coord(i, j, k));
     });
     
@@ -172,7 +172,7 @@ void GridSmokeSolver3::computeBuoyancyForce(double timeIntervalInSeconds) {
         
         double tAmb = 0.0;
         temp->forEachCellIndex(
-                               [&](uint i, uint j, uint k) {
+                               [&](unsigned int i, unsigned int j, unsigned int k) {
             tAmb += (*temp)(openvdb::Coord(i, j, k));
         });
         tAmb /= static_cast<double>(

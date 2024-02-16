@@ -12,7 +12,7 @@
 #include "../src.common/sphere2.h"
 #include "../src.common/surface_to_implicit2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -52,7 +52,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Boundary) {
     });
     
     vox::Array3<double> data(3, src.resolution().x, src.resolution().y);
-    data.forEachIndex([&](uint i, uint j, uint k) {
+    data.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (i < 2) {
             data(i, j, k) = src.getGrid()->tree().getValue(openvdb::Coord(j, k, 100))[i];
         }
@@ -62,7 +62,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Boundary) {
     SemiLagrangian3 solver;
     solver.advect(src, flow, 0.1, &dst, boundarySdf);
     
-    data.forEachIndex([&](uint i, uint j, uint k) {
+    data.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (i < 2) {
             data(i, j, k) = dst.getGrid()->tree().getValue(openvdb::Coord(j, k, 100))[i];
         }
@@ -101,7 +101,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Zalesak) {
     });
     
     vox::Array2<double> data(sdf.resolution().x, sdf.resolution().y);
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = sdf(openvdb::Coord(i, j, 2));
     });
     saveData(data.constAccessor(), "orig_#grid2,iso.npy");
@@ -113,7 +113,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Zalesak) {
         sdf.swap(&sdf2);
     }
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = sdf(openvdb::Coord(i, j, 2));
     });
     saveData(data.constAccessor(), "rev0628_#grid2,iso.npy");
@@ -150,7 +150,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Zalesak_cubic) {
     });
     
     vox::Array2<double> data(sdf.resolution().x, sdf.resolution().y);
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = sdf(openvdb::Coord(i, j, 2));
     });
     saveData(data.constAccessor(), "orig_#grid2,iso.npy");
@@ -162,7 +162,7 @@ JET_BEGIN_TEST_F(SemiLagrangian3, Zalesak_cubic) {
         sdf.swap(&sdf2);
     }
     
-    data.forEachIndex([&](uint i, uint j) {
+    data.forEachIndex([&](unsigned int i, unsigned int j) {
         data(i, j) = sdf(openvdb::Coord(i, j, 2));
     });
     saveData(data.constAccessor(), "rev0628_#grid2,iso.npy");

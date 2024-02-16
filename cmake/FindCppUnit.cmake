@@ -34,6 +34,17 @@ This will define the following variables:
   The version of the CppUnit library which was found.
 ``CppUnit_INCLUDE_DIRS``
   Include directories needed to use CppUnit.
+``CppUnit_RELEASE_LIBRARIES``
+  Libraries needed to link to the release version of CppUnit.
+``CppUnit_RELEASE_LIBRARY_DIRS``
+  CppUnit release library directories.
+``CppUnit_DEBUG_LIBRARIES``
+  Libraries needed to link to the debug version of CppUnit.
+``CppUnit_DEBUG_LIBRARY_DIRS``
+  CppUnit debug library directories.
+
+Deprecated - use [RELEASE|DEBUG] variants:
+
 ``CppUnit_LIBRARIES``
   Libraries needed to link to CppUnit.
 ``CppUnit_LIBRARY_DIRS``
@@ -61,6 +72,8 @@ may be provided to tell this module where to look.
   Preferred include directory e.g. <prefix>/include
 ``CPPUNIT_LIBRARYDIR``
   Preferred library directory e.g. <prefix>/lib
+``CPPUNIT_DEBUG_SUFFIX``
+  Suffix of the debug version of CppUnit libs. Defaults to "_d".
 ``SYSTEM_LIBRARY_PATHS``
   Global list of library paths intended to be searched by and find_xxx call
 ``CPPUNIT_USE_STATIC_LIBS``
@@ -70,12 +83,9 @@ may be provided to tell this module where to look.
 
 #]=======================================================================]
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.18)
+include(GNUInstallDirs)
 
-# Monitoring <PackageName>_ROOT variables
-if(POLICY CMP0074)
-  cmake_policy(SET CMP0074 NEW)
-endif()
 
 mark_as_advanced(
   CppUnit_INCLUDE_DIR
@@ -102,11 +112,12 @@ elseif(DEFINED ENV{CPPUNIT_ROOT})
 endif()
 
 # Additionally try and use pkconfig to find cppunit
-
-if(NOT DEFINED PKG_CONFIG_FOUND)
-  find_package(PkgConfig)
+if(USE_PKGCONFIG)
+  if(NOT DEFINED PKG_CONFIG_FOUND)
+    find_package(PkgConfig)
+  endif()
+  pkg_check_modules(PC_CppUnit QUIET cppunit)
 endif()
-pkg_check_modules(PC_CppUnit QUIET cppunit)
 
 # ------------------------------------------------------------------------
 #  Search for CppUnit include DIR
@@ -124,7 +135,7 @@ list(APPEND _CPPUNIT_INCLUDE_SEARCH_DIRS
 find_path(CppUnit_INCLUDE_DIR cppunit/Portability.h
   ${_FIND_CPPUNIT_ADDITIONAL_OPTIONS}
   PATHS ${_CPPUNIT_INCLUDE_SEARCH_DIRS}
-  PATH_SUFFIXES include
+  PATH_SUFFIXES ${CMAKE_INSTALL_INCLUDEDIR} include
 )
 
 if(EXISTS "${CppUnit_INCLUDE_DIR}/cppunit/Portability.h")
@@ -142,6 +153,10 @@ endif()
 #  Search for CppUnit lib DIR
 # ------------------------------------------------------------------------
 
+if(NOT DEFINED CPPUNIT_DEBUG_SUFFIX)
+  set(CPPUNIT_DEBUG_SUFFIX "d")
+endif()
+
 set(_CPPUNIT_LIBRARYDIR_SEARCH_DIRS "")
 list(APPEND _CPPUNIT_LIBRARYDIR_SEARCH_DIRS
   ${CPPUNIT_LIBRARYDIR}
@@ -154,35 +169,79 @@ list(APPEND _CPPUNIT_LIBRARYDIR_SEARCH_DIRS
 
 set(_CPPUNIT_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES})
 
-if(WIN32)
-  list(APPEND CMAKE_FIND_LIBRARY_SUFFIXES
-    "_dll.lib"
-  )
-elseif(UNIX)
+if(MSVC)
   if(CPPUNIT_USE_STATIC_LIBS)
-    list(APPEND CMAKE_FIND_LIBRARY_SUFFIXES
-      ".a"
-    )
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".lib")
+  else()
+    list(APPEND CMAKE_FIND_LIBRARY_SUFFIXES "_dll.lib")
+  endif()
+else()
+  if(CPPUNIT_USE_STATIC_LIBS)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
   endif()
 endif()
 
-# Build suffix directories
+list(APPEND CPPUNIT_BUILD_TYPES RELEASE DEBUG)
 
-set(CPPUNIT_PATH_SUFFIXES
-  lib64
-  lib
-)
+foreach(BUILD_TYPE ${CPPUNIT_BUILD_TYPES})
+  set(_CPPUNIT_LIB_NAME cppunit)
+  if(BUILD_TYPE STREQUAL DEBUG)
+    set(_CPPUNIT_LIB_NAME "${_CPPUNIT_LIB_NAME}${CPPUNIT_DEBUG_SUFFIX}")
+  endif()
 
-find_library(CppUnit_LIBRARY cppunit
-  ${_FIND_CPPUNIT_ADDITIONAL_OPTIONS}
-  PATHS ${_CPPUNIT_LIBRARYDIR_SEARCH_DIRS}
-  PATH_SUFFIXES ${CPPUNIT_PATH_SUFFIXES}
-)
+  # Find the lib
+  find_library(CppUnit_LIBRARY_${BUILD_TYPE} ${_CPPUNIT_LIB_NAME}
+    ${_FIND_CPPUNIT_ADDITIONAL_OPTIONS}
+    PATHS ${_CPPUNIT_LIBRARYDIR_SEARCH_DIRS}
+    PATH_SUFFIXES ${CMAKE_INSTALL_LIBDIR} lib64 lib
+  )
+endforeach()
 
 # Reset library suffix
 
 set(CMAKE_FIND_LIBRARY_SUFFIXES ${_CPPUNIT_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES})
 unset(_CPPUNIT_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES)
+
+if(CppUnit_LIBRARY_DEBUG AND CppUnit_LIBRARY_RELEASE)
+  # if the generator is multi-config or if CMAKE_BUILD_TYPE is set for
+  # single-config generators, set optimized and debug libraries
+  get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+  if(_isMultiConfig OR CMAKE_BUILD_TYPE)
+    set(CppUnit_LIBRARY optimized ${CppUnit_LIBRARY_RELEASE} debug ${CppUnit_LIBRARY_DEBUG})
+  else()
+    # For single-config generators where CMAKE_BUILD_TYPE has no value,
+    # just use the release libraries
+    set(CppUnit_LIBRARY ${CppUnit_LIBRARY_RELEASE})
+  endif()
+  # FIXME: This probably should be set for both cases
+  set(CppUnit_LIBRARIES optimized ${CppUnit_LIBRARY_RELEASE} debug ${CppUnit_LIBRARY_DEBUG})
+endif()
+
+# if only the release version was found, set the debug variable also to the release version
+if(CppUnit_LIBRARY_RELEASE AND NOT CppUnit_LIBRARY_DEBUG)
+  set(CppUnit_LIBRARY_DEBUG ${CppUnit_LIBRARY_RELEASE})
+  set(CppUnit_LIBRARY       ${CppUnit_LIBRARY_RELEASE})
+  set(CppUnit_LIBRARIES     ${CppUnit_LIBRARY_RELEASE})
+endif()
+
+# if only the debug version was found, set the release variable also to the debug version
+if(CppUnit_LIBRARY_DEBUG AND NOT CppUnit_LIBRARY_RELEASE)
+  set(CppUnit_LIBRARY_RELEASE ${CppUnit_LIBRARY_DEBUG})
+  set(CppUnit_LIBRARY         ${CppUnit_LIBRARY_DEBUG})
+  set(CppUnit_LIBRARIES       ${CppUnit_LIBRARY_DEBUG})
+endif()
+
+# If the debug & release library ends up being the same, omit the keywords
+if("${CppUnit_LIBRARY_RELEASE}" STREQUAL "${CppUnit_LIBRARY_DEBUG}")
+  set(CppUnit_LIBRARY   ${CppUnit_LIBRARY_RELEASE} )
+  set(CppUnit_LIBRARIES ${CppUnit_LIBRARY_RELEASE} )
+endif()
+
+if(CppUnit_LIBRARY)
+  set(CppUnit_FOUND TRUE)
+else()
+  set(CppUnit_FOUND FALSE)
+endif()
 
 # ------------------------------------------------------------------------
 #  Cache and set CppUnit_FOUND
@@ -197,21 +256,65 @@ find_package_handle_standard_args(CppUnit
   VERSION_VAR CppUnit_VERSION
 )
 
-if(CppUnit_FOUND)
-  set(CppUnit_LIBRARIES ${CppUnit_LIBRARY})
-  set(CppUnit_INCLUDE_DIRS ${CppUnit_INCLUDE_DIR})
-  set(CppUnit_DEFINITIONS ${PC_CppUnit_CFLAGS_OTHER})
-
-  get_filename_component(CppUnit_LIBRARY_DIRS ${CppUnit_LIBRARY} DIRECTORY)
-
-  if(NOT TARGET CppUnit::cppunit)
-    add_library(CppUnit::cppunit UNKNOWN IMPORTED)
-    set_target_properties(CppUnit::cppunit PROPERTIES
-      IMPORTED_LOCATION "${CppUnit_LIBRARIES}"
-      INTERFACE_COMPILE_DEFINITIONS "${CppUnit_DEFINITIONS}"
-      INTERFACE_INCLUDE_DIRECTORIES "${CppUnit_INCLUDE_DIRS}"
-    )
+if(NOT CppUnit_FOUND)
+  if(CppUnit_FIND_REQUIRED)
+    message(FATAL_ERROR "Unable to find CppUnit")
   endif()
-elseif(CppUnit_FIND_REQUIRED)
-  message(FATAL_ERROR "Unable to find CppUnit")
+  return()
+endif()
+
+# Partition release/debug lib vars
+
+set(CppUnit_RELEASE_LIBRARIES ${CppUnit_LIBRARY_RELEASE})
+get_filename_component(CppUnit_RELEASE_LIBRARY_DIRS ${CppUnit_RELEASE_LIBRARIES} DIRECTORY)
+set(CppUnit_DEBUG_LIBRARIES ${CppUnit_LIBRARY_DEBUG})
+get_filename_component(CppUnit_DEBUG_LIBRARY_DIRS ${CppUnit_DEBUG_LIBRARIES} DIRECTORY)
+set(CppUnit_LIBRARIES ${CppUnit_RELEASE_LIBRARIES})
+set(CppUnit_LIBRARY_DIRS ${CppUnit_RELEASE_LIBRARY_DIRS})
+set(CppUnit_INCLUDE_DIRS ${CppUnit_INCLUDE_DIR})
+
+# Configure lib type. If XXX_USE_STATIC_LIBS, we always assume a static
+# lib is in use. If win32, we can't mark the import .libs as shared, so
+# these are always marked as UNKNOWN. Otherwise, infer from extension.
+set(CPPUNIT_LIB_TYPE UNKNOWN)
+if(CPPUNIT_USE_STATIC_LIBS)
+  set(CPPUNIT_LIB_TYPE STATIC)
+elseif(UNIX)
+  get_filename_component(_CPPUNIT_EXT ${CppUnit_LIBRARY_RELEASE} EXT)
+  if(_CPPUNIT_EXT STREQUAL ".a")
+    set(CPPUNIT_LIB_TYPE STATIC)
+  elseif(_CPPUNIT_EXT STREQUAL ".so" OR
+         _CPPUNIT_EXT STREQUAL ".dylib")
+    set(CPPUNIT_LIB_TYPE SHARED)
+  endif()
+endif()
+
+if(NOT TARGET CppUnit::cppunit)
+  add_library(CppUnit::cppunit ${CPPUNIT_LIB_TYPE} IMPORTED)
+  set_target_properties(CppUnit::cppunit PROPERTIES
+    INTERFACE_COMPILE_OPTIONS "${PC_CppUnit_CFLAGS_OTHER}"
+    INTERFACE_INCLUDE_DIRECTORIES "${CppUnit_INCLUDE_DIRS}")
+
+  # Standard location
+  set_target_properties(CppUnit::cppunit PROPERTIES
+    IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+    IMPORTED_LOCATION "${CppUnit_LIBRARY}")
+
+  # Release location
+  if(EXISTS "${CppUnit_LIBRARY_RELEASE}")
+    set_property(TARGET CppUnit::cppunit APPEND PROPERTY
+      IMPORTED_CONFIGURATIONS RELEASE)
+    set_target_properties(CppUnit::cppunit PROPERTIES
+      IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+      IMPORTED_LOCATION_RELEASE "${CppUnit_LIBRARY_RELEASE}")
+  endif()
+
+  # Debug location
+  if(EXISTS "${CppUnit_LIBRARY_DEBUG}")
+    set_property(TARGET CppUnit::cppunit APPEND PROPERTY
+      IMPORTED_CONFIGURATIONS DEBUG)
+    set_target_properties(CppUnit::cppunit PROPERTIES
+      IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX"
+      IMPORTED_LOCATION_DEBUG "${CppUnit_LIBRARY_DEBUG}")
+  endif()
 endif()

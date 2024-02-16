@@ -16,7 +16,7 @@
 #include "../src.common/surface_to_implicit3.h"
 #include "../src.vdb/vdb_volume_grid_emitter3.hpp"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

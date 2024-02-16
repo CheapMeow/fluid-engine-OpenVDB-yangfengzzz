@@ -32,7 +32,7 @@ void buildSingleSystem(vox::FdmMatrix3* A, vox::FdmVector3* b,
     vox::Vector3D invHSqr = invH * invH;
     
     // Build linear system
-    A->parallelForEachIndex([&](uint i, uint j, uint k) {
+    A->parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         auto& row = (*A)(i, j, k);
         
         // initialize
@@ -102,7 +102,7 @@ void buildSingleSystem(vox::MatrixCsrD* A, vox::VectorND* x, vox::VectorND* b,
         }
     });
     
-    markers.forEachIndex([&](uint i, uint j, uint k) {
+    markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         const size_t cIdx = markerAcc.index(i, j, k);
         
         if (markerAcc[cIdx] == kFluid) {
@@ -225,7 +225,7 @@ void SinglePhasePressureSolver3::buildMarkers(const vox::Size3& size,
     vox::FdmMgUtils3::resizeArrayWithFinest(size, maxLevels, &_markers);
     
     // Build top-level markers
-    _markers[0].parallelForEachIndex([&](uint i, uint j, uint k) {
+    _markers[0].parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D pt = pos(openvdb::Coord(i, j, k));
         if (vox::isInsideSdf(boundarySdf.sample(pt))) {
             _markers[0](i, j, k) = kBoundary;
@@ -383,7 +383,7 @@ void SinglePhasePressureSolver3::applyPressureGradient(
     
     vox::Vector3D invH = 1.0 / input.gridSpacing();
     
-    x.forEachIndex([&](uint i, uint j, uint k) {
+    x.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (_markers[0](i, j, k) == kFluid) {
             if (i + 1 < size.x && _markers[0](i + 1, j, k) != kBoundary) {
                 output->getUGrid()->tree().setValue(openvdb::Coord(i + 1, j, k),

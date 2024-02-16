@@ -58,7 +58,7 @@ void FluidSolver3::setViscosityCoefficient(double newValue) {
 double FluidSolver3::cfl(double timeIntervalInSeconds) const {
     auto vel = _grids->velocity();
     double maxVel = 0.0;
-    vel->forEachCellIndex([&](uint i, uint j, uint k) {
+    vel->forEachCellIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D v = vel->valueAtCellCenter(i, j, k)
         + timeIntervalInSeconds * _gravity;
         maxVel = std::max(maxVel, v.x);
@@ -347,7 +347,7 @@ void FluidSolver3::applyBoundaryCondition() {
 void FluidSolver3::extrapolateIntoCollider(ScalarGrid3* grid) {
     vox::Array3<char> marker(grid->dataSize());
     auto pos = grid->dataPosition();
-    marker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    marker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(colliderSdf()->sample(pos(openvdb::Coord(i, j, k))))) {
             marker(i, j, k) = 0;
         } else {
@@ -364,7 +364,7 @@ void FluidSolver3::extrapolateIntoCollider(ScalarGrid3* grid) {
 void FluidSolver3::extrapolateIntoCollider(CollocatedVectorGrid3* grid) {
     vox::Array3<char> marker(grid->dataSize());
     auto pos = grid->dataPosition();
-    marker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    marker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(colliderSdf()->sample(pos(openvdb::Coord(i, j, k))))) {
             marker(i, j, k) = 0;
         } else {
@@ -387,7 +387,7 @@ void FluidSolver3::extrapolateIntoCollider(FaceCenteredGrid3* grid) {
     vox::Array3<char> vMarker(grid->vSize() );
     vox::Array3<char> wMarker(grid->wSize() );
     
-    uMarker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    uMarker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(colliderSdf()->sample(uPos(openvdb::Coord(i, j, k))))) {
             uMarker(i, j, k) = 0;
         } else {
@@ -395,7 +395,7 @@ void FluidSolver3::extrapolateIntoCollider(FaceCenteredGrid3* grid) {
         }
     });
     
-    vMarker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    vMarker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(colliderSdf()->sample(vPos(openvdb::Coord(i, j, k))))) {
             vMarker(i, j, k) = 0;
         } else {
@@ -403,7 +403,7 @@ void FluidSolver3::extrapolateIntoCollider(FaceCenteredGrid3* grid) {
         }
     });
     
-    wMarker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    wMarker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(colliderSdf()->sample(wPos(openvdb::Coord(i, j, k))))) {
             wMarker(i, j, k) = 0;
         } else {

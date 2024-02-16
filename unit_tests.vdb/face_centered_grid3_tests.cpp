@@ -7,7 +7,7 @@
 #include "../src.vdb/vdb_face_centered_grid3.h"
 #include "../src.vdb/vdb_math_utils.h"
 #include "../src.vdb/vdb_helper.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vdb;
@@ -135,25 +135,25 @@ TEST(FaceCenteredGrid3, Fill) {
     grid.fill(vox::Vector3D(42.0, 27.0, 31.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.uSize().z; ++k) {
-        for (uint j = 0; j < grid.uSize().y; ++j) {
-            for (uint i = 0; i < grid.uSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.uSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.uSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.uSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(42.0, grid.u(openvdb::Coord(i, j, k)));
             }
         }
     }
     
-    for (uint k = 0; k < grid.vSize().z; ++k) {
-        for (uint j = 0; j < grid.vSize().y; ++j) {
-            for (uint i = 0; i < grid.vSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.vSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.vSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.vSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(27.0, grid.v(openvdb::Coord(i, j, k)));
             }
         }
     }
     
-    for (uint k = 0; k < grid.wSize().z; ++k) {
-        for (uint j = 0; j < grid.wSize().y; ++j) {
-            for (uint i = 0; i < grid.wSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.wSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.wSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.wSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(31.0, grid.w(openvdb::Coord(i, j, k)));
             }
         }
@@ -162,27 +162,27 @@ TEST(FaceCenteredGrid3, Fill) {
     auto func = [](const vox::Vector3D& x) { return x; };
     grid.fill(func, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.uSize().z; ++k) {
-        for (uint j = 0; j < grid.uSize().y; ++j) {
-            for (uint i = 0; i < grid.uSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.uSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.uSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.uSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(static_cast<double>(i),
                                  grid.u(openvdb::Coord(i, j, k)));
             }
         }
     }
     
-    for (uint k = 0; k < grid.vSize().z; ++k) {
-        for (uint j = 0; j < grid.vSize().y; ++j) {
-            for (uint i = 0; i < grid.vSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.vSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.vSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.vSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(static_cast<double>(j),
                                  grid.v(openvdb::Coord(i, j, k)));
             }
         }
     }
     
-    for (uint k = 0; k < grid.wSize().z; ++k) {
-        for (uint j = 0; j < grid.wSize().y; ++j) {
-            for (uint i = 0; i < grid.wSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.wSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.wSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.wSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(static_cast<double>(k),
                                  grid.w(openvdb::Coord(i, j, k)));
             }
@@ -196,9 +196,9 @@ TEST(FaceCenteredGrid3, DivergenceAtCellCenter) {
     grid.fill(vox::Vector3D(1.0, -2.0, 3.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 EXPECT_DOUBLE_EQ(0.0, grid.divergenceAtCellCenter(i, j, k));
             }
         }
@@ -207,9 +207,9 @@ TEST(FaceCenteredGrid3, DivergenceAtCellCenter) {
     grid.fill([](const vox::Vector3D& x) { return x; },
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 EXPECT_DOUBLE_EQ(3.0, grid.divergenceAtCellCenter(i, j, k));
             }
         }
@@ -222,9 +222,9 @@ TEST(FaceCenteredGrid3, CurlAtCellCenter) {
     grid.fill(vox::Vector3D(1.0, -2.0, 3.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 vox::Vector3D curl = grid.curlAtCellCenter(i, j, k);
                 EXPECT_DOUBLE_EQ(0.0, curl.x);
                 EXPECT_DOUBLE_EQ(0.0, curl.y);
@@ -236,9 +236,9 @@ TEST(FaceCenteredGrid3, CurlAtCellCenter) {
     grid.fill([](const vox::Vector3D& x) { return vox::Vector3D(x.y, x.z, x.x); },
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 1; k < grid.resolution().z - 1; ++k) {
-        for (uint j = 1; j < grid.resolution().y - 1; ++j) {
-            for (uint i = 1; i < grid.resolution().x - 1; ++i) {
+    for (unsigned int k = 1; k < grid.resolution().z - 1; ++k) {
+        for (unsigned int j = 1; j < grid.resolution().y - 1; ++j) {
+            for (unsigned int i = 1; i < grid.resolution().x - 1; ++i) {
                 vox::Vector3D curl = grid.curlAtCellCenter(i, j, k);
                 EXPECT_DOUBLE_EQ(-1.0, curl.x);
                 EXPECT_DOUBLE_EQ(-1.0, curl.y);
@@ -255,7 +255,7 @@ TEST(FaceCenteredGrid3, ValueAtCellCenter) {
     }, vox::ExecutionPolicy::kSerial);
     
     auto pos = grid.cellCenterPosition();
-    grid.forEachCellIndex([&](uint i, uint j, uint k) {
+    grid.forEachCellIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D val = grid.valueAtCellCenter(i, j, k);
         vox::Vector3D x = pos(openvdb::Coord(i, j, k));
         vox::Vector3D expected
@@ -273,7 +273,7 @@ TEST(FaceCenteredGrid3, Sample) {
     }, vox::ExecutionPolicy::kSerial);
     
     auto pos = grid.cellCenterPosition();
-    grid.forEachCellIndex([&](uint i, uint j, uint k) {
+    grid.forEachCellIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D x = pos(openvdb::Coord(i, j, k));
         vox::Vector3D val = grid.sample(x);
         vox::Vector3D expected

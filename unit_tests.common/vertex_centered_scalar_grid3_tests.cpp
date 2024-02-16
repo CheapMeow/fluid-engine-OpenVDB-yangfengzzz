@@ -5,7 +5,7 @@
 // property of any third parties.
 
 #include "../src.common/vertex_centered_scalar_grid3.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vox;

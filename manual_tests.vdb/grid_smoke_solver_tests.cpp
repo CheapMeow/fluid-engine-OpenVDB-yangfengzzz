@@ -31,7 +31,7 @@ JET_BEGIN_TEST_F(GridSmokeSolver3, Rising) {
     // This is a replica of smoke_sim example 4
     //
     
-    uint resolutionX = 50;
+    unsigned int resolutionX = 50;
     
     // Build solver
     auto solver = GridSmokeSolver3::builder()
@@ -103,7 +103,7 @@ JET_BEGIN_TEST_F(GridSmokeSolver3, RisingWithCollider) {
     // This is a replica of smoke_sim example 1.
     //
     
-    uint resolutionX = 50;
+    unsigned int resolutionX = 50;
     
     // Build solver
     auto solver = GridSmokeSolver3::builder()
@@ -176,7 +176,7 @@ JET_BEGIN_TEST_F(GridSmokeSolver3, RisingWithColliderLinear) {
     // This is a replica of smoke_sim example 2.
     //
     
-    uint resolutionX = 50;
+    unsigned int resolutionX = 50;
     
     // Build solver
     auto solver = GridSmokeSolver3::builder()

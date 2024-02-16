@@ -11,7 +11,7 @@
 #include "../src.vdb/vdb_fmm_level_set_solver3.hpp"
 #include "../src.vdb/vdb_upwind_level_set_solver3.hpp"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 
@@ -25,9 +25,9 @@ TEST(UpwindLevelSetSolver3, Reinitialize) {
     UpwindLevelSetSolver3 solver;
     solver.reinitialize(sdf, 5.0, &temp);
 
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_NEAR(sdf(openvdb::Coord(i, j, k)),
                             temp(openvdb::Coord(i, j, k)), 0.7)
                 << i << ", " << j << ", " << k;
@@ -48,9 +48,9 @@ TEST(UpwindLevelSetSolver3, Extrapolate) {
     UpwindLevelSetSolver3 solver;
     solver.extrapolate(field, sdf, 5.0, &temp);
 
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_DOUBLE_EQ(5.0, temp(openvdb::Coord(i, j, k) ))
                 << i << ", " << j << ", " << k;
             }
@@ -70,9 +70,9 @@ TEST(EnoLevelSetSolver3, Reinitialize) {
     EnoLevelSetSolver3 solver;
     solver.reinitialize(sdf, 5.0, &temp);
 
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_NEAR(sdf(openvdb::Coord(i, j, k)),
                             temp(openvdb::Coord(i, j, k)), 0.5)
                 << i << ", " << j << ", " << k;
@@ -93,9 +93,9 @@ TEST(EnoLevelSetSolver3, Extrapolate) {
     EnoLevelSetSolver3 solver;
     solver.extrapolate(field, sdf, 5.0, &temp);
 
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_DOUBLE_EQ(5.0, temp(openvdb::Coord(i, j, k)))
                 << i << ", " << j << ", " << k;
             }
@@ -114,9 +114,9 @@ TEST(FmmLevelSetSolver3, Reinitialize) {
     FmmLevelSetSolver3 solver;
     solver.reinitialize(sdf, 5.0, &temp);
     
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_NEAR(sdf(openvdb::Coord(i, j, k)),
                             temp(openvdb::Coord(i, j, k)), 0.9)
                 << i << ", " << j << ", " << k;
@@ -137,9 +137,9 @@ TEST(FmmLevelSetSolver3, Extrapolate) {
     FmmLevelSetSolver3 solver;
     solver.extrapolate(field, sdf, 5.0, &temp);
 
-    for (uint k = 0; k < 50; ++k) {
-        for (uint j = 0; j < 30; ++j) {
-            for (uint i = 0; i < 40; ++i) {
+    for (unsigned int k = 0; k < 50; ++k) {
+        for (unsigned int j = 0; j < 30; ++j) {
+            for (unsigned int i = 0; i < 40; ++i) {
                 EXPECT_DOUBLE_EQ(5.0, temp(openvdb::Coord(i, j, k)) )
                 << i << ", " << j << ", " << k;
             }

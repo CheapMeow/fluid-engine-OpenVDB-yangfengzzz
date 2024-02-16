@@ -6,7 +6,7 @@
 
 #include "../src.vdb/vdb_fluid_solver3.hpp"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

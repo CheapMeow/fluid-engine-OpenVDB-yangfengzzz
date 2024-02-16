@@ -8,7 +8,7 @@
 #include "../src.vdb/vdb_backward_euler_diffusion_solver3.hpp"
 #include "../src.common/array3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

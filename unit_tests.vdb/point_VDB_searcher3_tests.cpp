@@ -8,7 +8,7 @@
 
 #include "../src.vdb/vdb_point_searcher3.hpp"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vdb;

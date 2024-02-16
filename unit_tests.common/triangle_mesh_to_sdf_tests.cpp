@@ -8,7 +8,7 @@
 #include "../src.common/triangle_mesh_to_sdf.h"
 #include "../src.common/cell_centered_scalar_grid3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

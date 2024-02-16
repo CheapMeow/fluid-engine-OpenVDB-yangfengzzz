@@ -8,7 +8,7 @@
 #include "../src.common/plane3.h"
 #include "../src.common/rigid_body_collider3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -8,7 +8,7 @@
 #include "../src.common/collider_set2.h"
 #include "../src.common/rigid_body_collider2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vox;

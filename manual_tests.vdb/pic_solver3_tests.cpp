@@ -29,7 +29,7 @@ JET_BEGIN_TEST_F(PicSolver3, WaterDrop) {
     //
     // This is a replica of hybrid_liquid_sim example 2.
     //
-    uint resolutionX = 32;
+    unsigned int resolutionX = 32;
     
     // Build solver
     auto solver =

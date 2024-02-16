@@ -27,8 +27,8 @@ JET_BEGIN_TEST_F(UpwindLevelSetSolver3, ReinitializeSmall) {
     
     vox::Array2<double> sdf2(40, 30);
     vox::Array2<double> temp2(40, 30);
-    for (uint j = 0; j < 30; ++j) {
-        for (uint i = 0; i < 40; ++i) {
+    for (unsigned int j = 0; j < 30; ++j) {
+        for (unsigned int i = 0; i < 40; ++i) {
             sdf2(i, j) = sdf.getGrid()->tree().getValue(openvdb::Coord(i, j, 10));
             temp2(i, j) = temp.getGrid()->tree().getValue(openvdb::Coord(i, j, 10));
         }
@@ -59,8 +59,8 @@ JET_BEGIN_TEST_F(UpwindLevelSetSolver3, ExtrapolateSmall) {
     
     vox::Array2<double> field2(40, 30);
     vox::Array2<double> temp2(40, 30);
-    for (uint j = 0; j < 30; ++j) {
-        for (uint i = 0; i < 40; ++i) {
+    for (unsigned int j = 0; j < 30; ++j) {
+        for (unsigned int i = 0; i < 40; ++i) {
             field2(i, j) = field.getGrid()->tree().getValue(openvdb::Coord(i, j, 12));
             temp2(i, j) = temp.getGrid()->tree().getValue(openvdb::Coord(i, j, 12));
         }
@@ -86,8 +86,8 @@ JET_BEGIN_TEST_F(EnoLevelSetSolver3, ReinitializeSmall) {
     
     vox::Array2<double> sdf2(40, 30);
     vox::Array2<double> temp2(40, 30);
-    for (uint j = 0; j < 30; ++j) {
-        for (uint i = 0; i < 40; ++i) {
+    for (unsigned int j = 0; j < 30; ++j) {
+        for (unsigned int i = 0; i < 40; ++i) {
             sdf2(i, j) = sdf.getGrid()->tree().getValue(openvdb::Coord(i, j, 10));
             temp2(i, j) = temp.getGrid()->tree().getValue(openvdb::Coord(i, j, 10));
         }
@@ -118,8 +118,8 @@ JET_BEGIN_TEST_F(EnoLevelSetSolver3, ExtrapolateSmall) {
     
     vox::Array2<double> field2(40, 30);
     vox::Array2<double> temp2(40, 30);
-    for (uint j = 0; j < 30; ++j) {
-        for (uint i = 0; i < 40; ++i) {
+    for (unsigned int j = 0; j < 30; ++j) {
+        for (unsigned int i = 0; i < 40; ++i) {
             field2(i, j) = field.getGrid()->tree().getValue(openvdb::Coord(i, j, 12));
             temp2(i, j) = temp.getGrid()->tree().getValue(openvdb::Coord(i, j, 12));
         }

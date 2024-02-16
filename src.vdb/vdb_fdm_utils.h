@@ -19,9 +19,9 @@ vox::Vector3D gradient3(
                          const openvdb::DoubleGrid::Ptr data,
                          const vox::Size3 size,
                          const vox::Vector3D& gridSpacing,
-                         uint i,
-                         uint j,
-                         uint k);
+                         unsigned int i,
+                         unsigned int j,
+                         unsigned int k);
 
 //! \brief Returns 3-D gradient vectors from given 3-D vector grid-like array
 //!        \p data, \p gridSpacing, and array index (\p i, \p j, \p k).
@@ -29,9 +29,9 @@ std::array<vox::Vector3D, 3> gradient3(
                                         const openvdb::Vec3dGrid::Ptr data,
                                         const vox::Size3 size,
                                         const vox::Vector3D& gridSpacing,
-                                        uint i,
-                                        uint j,
-                                        uint k);
+                                        unsigned int i,
+                                        unsigned int j,
+                                        unsigned int k);
 
 
 //! \brief Returns Laplacian value from given 3-D scalar grid-like array
@@ -40,9 +40,9 @@ double laplacian3(
                   const openvdb::DoubleGrid::Ptr data,
                   const vox::Size3 size,
                   const vox::Vector3D& gridSpacing,
-                  uint i,
-                  uint j,
-                  uint k);
+                  unsigned int i,
+                  unsigned int j,
+                  unsigned int k);
 
 //! \brief Returns 3-D Laplacian vectors from given 3-D vector grid-like array
 //!        \p data, \p gridSpacing, and array index (\p i, \p j, \p k).
@@ -50,9 +50,9 @@ vox::Vector3D laplacian3(
                           const openvdb::Vec3dGrid::Ptr data,
                           const vox::Size3 size,
                           const vox::Vector3D& gridSpacing,
-                          uint i,
-                          uint j,
-                          uint k);
+                          unsigned int i,
+                          unsigned int j,
+                          unsigned int k);
 
 
 }  // namespace vox

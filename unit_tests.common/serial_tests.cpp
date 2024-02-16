@@ -9,7 +9,7 @@
 #include "../src.common/constants.h"
 #include "../src.common/serial.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <functional>
 #include <random>

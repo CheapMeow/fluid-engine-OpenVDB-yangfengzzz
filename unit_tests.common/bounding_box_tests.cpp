@@ -6,7 +6,7 @@
 
 #include "../src.common/bounding_box.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <limits>
 
 using namespace vox;

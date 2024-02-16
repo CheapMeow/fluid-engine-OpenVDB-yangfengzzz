@@ -100,9 +100,9 @@ protected:
     //! Computes the derivatives for given grid point.
     virtual void getDerivatives(vox::ConstArrayAccessor3<double> grid,
                                 const vox::Vector3D& gridSpacing,
-                                uint i,
-                                uint j,
-                                uint k,
+                                unsigned int i,
+                                unsigned int j,
+                                unsigned int k,
                                 std::array<double, 2>* dx,
                                 std::array<double, 2>* dy,
                                 std::array<double, 2>* dz) const = 0;
@@ -121,9 +121,9 @@ private:
     
     static double sign(const vox::ConstArrayAccessor3<double>& sdf,
                        const vox::Vector3D& gridSpacing,
-                       uint i,
-                       uint j,
-                       uint k);
+                       unsigned int i,
+                       unsigned int j,
+                       unsigned int k);
     
     double pseudoTimeStep(const vox::ConstArrayAccessor3<double>& sdf,
                           const vox::Vector3D& gridSpacing);

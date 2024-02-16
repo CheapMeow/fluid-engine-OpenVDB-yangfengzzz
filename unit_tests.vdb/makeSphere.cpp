@@ -11,7 +11,7 @@
 #include <openvdb/tools/Mask.h>
 #include <openvdb/tools/GridOperators.h>
 #include <openvdb/tools/Filter.h>
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 // Populate the given grid with a narrow-band level set representation of a sphere.
 // The width of the narrow band is determined by the grid's background value.

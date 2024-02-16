@@ -138,14 +138,14 @@ void vdb::extrapolateToRegion(typename GridType::Ptr input,
     vox::Array3<char> valid0(size);
     vox::Array3<char> valid1(size);
     
-    valid0.forEachIndex([&](uint i, uint j, uint k) {
+    valid0.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         valid0(i, j, k) = valid(i, j, k);
         openvdb::Coord coord(i, j, k);
         output->tree().setValueOnly(coord, input->tree().getValue(coord));
     });
     
     for (unsigned int iter = 0; iter < numberOfIterations; ++iter) {
-        valid0.forEachIndex([&](uint i, uint j, uint k) {
+        valid0.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             typename GridType::ValueType sum = openvdb::zeroVal<typename GridType::ValueType>();
             unsigned int count = 0;
             

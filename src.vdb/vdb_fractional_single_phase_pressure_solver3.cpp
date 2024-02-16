@@ -128,7 +128,7 @@ void buildSingleSystem(vox::FdmMatrix3* A, vox::FdmVector3* b,
     const vox::Vector3D invHSqr = invH * invH;
     
     // Build linear system
-    A->parallelForEachIndex([&](uint i, uint j, uint k) {
+    A->parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         auto& row = (*A)(i, j, k);
         
         // initialize
@@ -295,7 +295,7 @@ void buildSingleSystem(vox::MatrixCsrD* A, vox::VectorND* x, vox::VectorND* b,
         }
     });
     
-    fluidSdf.forEachIndex([&](uint i, uint j, uint k) {
+    fluidSdf.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         const size_t cIdx = fluidSdfAcc.index(i, j, k);
         
         const double centerPhi = fluidSdf[cIdx];
@@ -517,12 +517,12 @@ void FractionalSinglePhasePressureSolver3::buildWeights(
     _boundaryVel = boundaryVelocity.sampler();
     vox::Vector3D h = input.gridSpacing();
     
-    _fluidSdf[0].parallelForEachIndex([&](uint i, uint j, uint k) {
+    _fluidSdf[0].parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         _fluidSdf[0](i, j, k) =
         static_cast<float>(fluidSdf.sample(cellPos(openvdb::Coord(i, j, k))));
     });
     
-    _uWeights[0].parallelForEachIndex([&](uint i, uint j, uint k) {
+    _uWeights[0].parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D pt = uPos(openvdb::Coord(i, j, k));
         double phi0 =
         boundarySdf.sample(pt + vox::Vector3D(0.0, -0.5 * h.y, -0.5 * h.z));
@@ -544,7 +544,7 @@ void FractionalSinglePhasePressureSolver3::buildWeights(
         _uWeights[0](i, j, k) = static_cast<float>(weight);
     });
     
-    _vWeights[0].parallelForEachIndex([&](uint i, uint j, uint k) {
+    _vWeights[0].parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D pt = vPos(openvdb::Coord(i, j, k));
         double phi0 =
         boundarySdf.sample(pt + vox::Vector3D(-0.5 * h.x, 0.0, -0.5 * h.z));
@@ -566,7 +566,7 @@ void FractionalSinglePhasePressureSolver3::buildWeights(
         _vWeights[0](i, j, k) = static_cast<float>(weight);
     });
     
-    _wWeights[0].parallelForEachIndex([&](uint i, uint j, uint k) {
+    _wWeights[0].parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D pt = wPos(openvdb::Coord(i, j, k));
         double phi0 =
         boundarySdf.sample(pt + vox::Vector3D(-0.5 * h.x, -0.5 * h.y, 0.0));
@@ -700,7 +700,7 @@ void FractionalSinglePhasePressureSolver3::applyPressureGradient(
     
     vox::Vector3D invH = 1.0 / input.gridSpacing();
     
-    x.forEachIndex([&](uint i, uint j, uint k) {
+    x.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         double centerPhi = _fluidSdf[0](i, j, k);
         
         if (i + 1 < size.x && _uWeights[0](i + 1, j, k) > 0.0 &&

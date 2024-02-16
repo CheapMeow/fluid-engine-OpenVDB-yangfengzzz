@@ -10,7 +10,7 @@
 #include "../src.common/sphere3.h"
 #include "../src.common/surface_to_implicit3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

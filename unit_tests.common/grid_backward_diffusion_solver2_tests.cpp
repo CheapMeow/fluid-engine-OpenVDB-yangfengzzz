@@ -7,7 +7,7 @@
 #include "../src.common/cell_centered_scalar_grid2.h"
 #include "../src.common/grid_backward_euler_diffusion_solver2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

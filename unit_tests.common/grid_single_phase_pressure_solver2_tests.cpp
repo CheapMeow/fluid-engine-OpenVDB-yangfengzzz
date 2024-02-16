@@ -9,7 +9,7 @@
 #include "../src.common/fdm_mg_solver2.h"
 #include "../src.common/grid_single_phase_pressure_solver2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

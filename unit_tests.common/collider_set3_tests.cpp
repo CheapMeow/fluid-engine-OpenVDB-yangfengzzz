@@ -7,7 +7,7 @@
 #include "../src.common/box3.h"
 #include "../src.common/collider_set3.h"
 #include "../src.common/rigid_body_collider3.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vox;

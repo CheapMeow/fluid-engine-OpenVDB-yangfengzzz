@@ -12,9 +12,9 @@ vox::Vector3D gradient3(
                          const openvdb::DoubleGrid::Ptr data,
                          const vox::Size3 ds,
                          const vox::Vector3D& gridSpacing,
-                         uint i,
-                         uint j,
-                         uint k){
+                         unsigned int i,
+                         unsigned int j,
+                         unsigned int k){
     JET_ASSERT(i < ds.x && j < ds.y && k < ds.z);
     
     double left = data->tree().getValue(openvdb::Coord((i > 0) ? i - 1 : i, j, k));
@@ -31,9 +31,9 @@ std::array<vox::Vector3D, 3> gradient3(
                                         const openvdb::Vec3dGrid::Ptr data,
                                         const vox::Size3 ds,
                                         const vox::Vector3D& gridSpacing,
-                                        uint i,
-                                        uint j,
-                                        uint k){
+                                        unsigned int i,
+                                        unsigned int j,
+                                        unsigned int k){
     JET_ASSERT(i < ds.x && j < ds.y && k < ds.z);
     
     openvdb::Vec3d left = data->tree().getValue(openvdb::Coord((i > 0) ? i - 1 : i, j, k));
@@ -58,9 +58,9 @@ double laplacian3(
                   const openvdb::DoubleGrid::Ptr data,
                   const vox::Size3 ds,
                   const vox::Vector3D& gridSpacing,
-                  uint i,
-                  uint j,
-                  uint k){
+                  unsigned int i,
+                  unsigned int j,
+                  unsigned int k){
     const double center = data->tree().getValue(openvdb::Coord(i, j, k));
 
     JET_ASSERT(i < ds.x && j < ds.y && k < ds.z);
@@ -102,9 +102,9 @@ vox::Vector3D laplacian3(
                           const openvdb::Vec3dGrid::Ptr data,
                           const vox::Size3 ds,
                           const vox::Vector3D& gridSpacing,
-                          uint i,
-                          uint j,
-                          uint k){
+                          unsigned int i,
+                          unsigned int j,
+                          unsigned int k){
     const openvdb::Vec3d center = data->tree().getValue(openvdb::Coord(i, j, k));
 
     JET_ASSERT(i < ds.x && j < ds.y && k < ds.z);

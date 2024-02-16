@@ -37,3 +37,5 @@ DerivedData/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
+# vcpkg menifest mode
+vcpkg_installed/

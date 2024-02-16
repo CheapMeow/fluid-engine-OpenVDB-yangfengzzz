@@ -299,7 +299,7 @@ void FaceCenteredGrid3::fill(const vox::Vector3D& value,
                      vox::kZeroSize, uSize().x,
                      vox::kZeroSize, uSize().y,
                      vox::kZeroSize, uSize().z,
-                     [this, value](uint i, uint j, uint k) {
+                     [this, value](unsigned int i, unsigned int j, unsigned int k) {
         _dataU->tree().setValueOnly(openvdb::Coord(i, j, k), value.x);
     }, policy);
     
@@ -307,7 +307,7 @@ void FaceCenteredGrid3::fill(const vox::Vector3D& value,
                      vox::kZeroSize, vSize().x,
                      vox::kZeroSize, vSize().y,
                      vox::kZeroSize, vSize().z,
-                     [this, value](uint i, uint j, uint k) {
+                     [this, value](unsigned int i, unsigned int j, unsigned int k) {
         _dataV->tree().setValueOnly(openvdb::Coord(i, j, k), value.y);
     }, policy);
     
@@ -315,7 +315,7 @@ void FaceCenteredGrid3::fill(const vox::Vector3D& value,
                      vox::kZeroSize, wSize().x,
                      vox::kZeroSize, wSize().y,
                      vox::kZeroSize, wSize().z,
-                     [this, value](uint i, uint j, uint k) {
+                     [this, value](unsigned int i, unsigned int j, unsigned int k) {
         _dataW->tree().setValueOnly(openvdb::Coord(i, j, k), value.z);
     }, policy);
 }
@@ -327,7 +327,7 @@ void FaceCenteredGrid3::fill(
     vox::parallelFor(vox::kZeroSize, uSize().x,
                      vox::kZeroSize, uSize().y,
                      vox::kZeroSize, uSize().z,
-                     [this, &func, &uPos](uint i, uint j, uint k) {
+                     [this, &func, &uPos](unsigned int i, unsigned int j, unsigned int k) {
         _dataU->tree().setValueOnly(openvdb::Coord(i, j, k),
                                     func(uPos(openvdb::Coord(i, j, k))).x);
     }, policy);
@@ -336,7 +336,7 @@ void FaceCenteredGrid3::fill(
     vox::parallelFor(vox::kZeroSize, vSize().x,
                      vox::kZeroSize, vSize().y,
                      vox::kZeroSize, vSize().z,
-                     [this, &func, &vPos](uint i, uint j, uint k) {
+                     [this, &func, &vPos](unsigned int i, unsigned int j, unsigned int k) {
         _dataV->tree().setValueOnly(openvdb::Coord(i, j, k),
                                     func(vPos(openvdb::Coord(i, j, k))).y);
     }, policy);
@@ -345,7 +345,7 @@ void FaceCenteredGrid3::fill(
     vox::parallelFor(vox::kZeroSize, wSize().x,
                      vox::kZeroSize, wSize().y,
                      vox::kZeroSize, wSize().z,
-                     [this, &func, &wPos](uint i, uint j, uint k) {
+                     [this, &func, &wPos](unsigned int i, unsigned int j, unsigned int k) {
         _dataW->tree().setValueOnly(openvdb::Coord(i, j, k),
                                     func(wPos(openvdb::Coord(i, j, k))).z);
     }, policy);

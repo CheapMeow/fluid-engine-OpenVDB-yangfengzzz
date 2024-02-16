@@ -6,7 +6,7 @@
 
 #include "../src.common/array_accessor3.h"
 #include "../src.common/array3.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

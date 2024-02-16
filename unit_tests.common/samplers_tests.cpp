@@ -7,7 +7,7 @@
 #include "../src.common/constants.h"
 #include "../src.common/samplers.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <random>
 
 using namespace vox;

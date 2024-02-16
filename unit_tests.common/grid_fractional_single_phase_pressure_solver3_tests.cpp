@@ -10,7 +10,7 @@
 #include "../src.common/fdm_mgpcg_solver3.h"
 #include "../src.common/grid_fractional_single_phase_pressure_solver3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

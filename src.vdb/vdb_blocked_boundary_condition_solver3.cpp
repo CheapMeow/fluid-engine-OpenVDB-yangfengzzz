@@ -38,7 +38,7 @@ void BlockedBoundaryConditionSolver3::onColliderUpdated(const vox::Size3& gridSi
     = std::dynamic_pointer_cast<CellCenteredScalarGrid3>(colliderSdf());
     
     _marker.resize(gridSize);
-    _marker.parallelForEachIndex([&](uint i, uint j, uint k) {
+    _marker.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf((*sdf)(openvdb::Coord(i, j, k)))) {
             _marker(i, j, k) = kCollider;
         } else {
@@ -61,7 +61,7 @@ void BlockedBoundaryConditionSolver3::constrainVelocity(FaceCenteredGrid3* veloc
     const auto sdf
     = std::dynamic_pointer_cast<CellCenteredScalarGrid3>(colliderSdf());
     
-    _marker.forEachIndex([&](uint i, uint j, uint k) {
+    _marker.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         if (_marker(i, j, k) == kCollider) {
             openvdb::Coord coord(i, j, k);
             if (i > 0 && _marker(i - 1, j, k) == kFluid) {

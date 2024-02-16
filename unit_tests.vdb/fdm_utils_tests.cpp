@@ -10,7 +10,7 @@
 #include "../src.vdb/vdb_cell_centered_vector_grid3.h"
 #include "../src.vdb/vdb_fdm_utils.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

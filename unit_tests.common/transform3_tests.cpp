@@ -8,7 +8,7 @@
 
 #include "../src.common/transform3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

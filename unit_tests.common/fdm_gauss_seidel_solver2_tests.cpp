@@ -8,7 +8,7 @@
 
 #include "../src.common/fdm_gauss_seidel_solver2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

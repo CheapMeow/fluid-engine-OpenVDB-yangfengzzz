@@ -92,7 +92,7 @@ void ForwardEulerDiffusionSolver3::solve(
     
     buildMarkers(source.resolution(), pos, boundarySdf, fluidSdf);
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         if (_markers(i, j, k) == kFluid) {
             dest->getGrid()->tree().setValueOnly(coord,
@@ -121,7 +121,7 @@ void ForwardEulerDiffusionSolver3::solve(
     
     buildMarkers(source.resolution(), pos, boundarySdf, fluidSdf);
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         if (_markers(i, j, k) == kFluid) {
             dest->getGrid()->tree().setValueOnly(coord, source.getGrid()->tree().getValue(coord)
@@ -149,7 +149,7 @@ void ForwardEulerDiffusionSolver3::solve(
     
     buildMarkers(source.uSize(), uPos, boundarySdf, fluidSdf);
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         if (!vox::isInsideSdf(boundarySdf.sample(source.uPosition()(coord) ))) {
             dest->getUGrid()->tree().setValueOnly(coord,
@@ -164,7 +164,7 @@ void ForwardEulerDiffusionSolver3::solve(
     
     buildMarkers(source.vSize(), vPos, boundarySdf, fluidSdf);
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         if (!vox::isInsideSdf(boundarySdf.sample(source.vPosition()(coord) ))) {
             dest->getVGrid()->tree().setValueOnly(coord,
@@ -179,7 +179,7 @@ void ForwardEulerDiffusionSolver3::solve(
     
     buildMarkers(source.wSize(), wPos, boundarySdf, fluidSdf);
     
-    _markers.forEachIndex([&](uint i, uint j, uint k) {
+    _markers.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         if (!vox::isInsideSdf(boundarySdf.sample(source.wPosition()(coord) ))) {
             dest->getWGrid()->tree().setValueOnly(coord,
@@ -201,7 +201,7 @@ void ForwardEulerDiffusionSolver3::buildMarkers(
     _markers.resize(size);
     
     _markers.forEachIndex(
-                          [&](uint i, uint j, uint k) {
+                          [&](unsigned int i, unsigned int j, unsigned int k) {
         if (vox::isInsideSdf(boundarySdf.sample(pos(openvdb::Coord(i, j, k))))) {
             _markers(i, j, k) = kBoundary;
         } else if (vox::isInsideSdf(fluidSdf.sample(pos(openvdb::Coord(i, j, k))))) {

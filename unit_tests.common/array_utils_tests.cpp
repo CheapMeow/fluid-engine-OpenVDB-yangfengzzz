@@ -8,7 +8,7 @@
 #include "../src.common/array2.h"
 #include "../src.common/array3.h"
 #include "../src.common/array_utils.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #include <sstream>
 #include <string>

@@ -6,7 +6,7 @@
 
 #include "../src.common/matrix_mxn.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #include <algorithm>
 

@@ -7,7 +7,7 @@
 #include "../src.common/math_utils.h"
 #include "../src.common/point_particle_emitter2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

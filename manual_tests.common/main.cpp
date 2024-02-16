@@ -5,7 +5,7 @@
 // property of any third parties.
 
 #include "manual_tests.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <fstream>
 
 using namespace vox;

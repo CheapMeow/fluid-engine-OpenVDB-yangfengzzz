@@ -9,7 +9,7 @@
 //#include <openvdb/io/Stream.h>
 //#include <openvdb/openvdb.h>
 //
-//#include "../external/gtest/include/gtest/gtest.h"
+//#include "gtest/gtest.h"
 //
 //TEST(GridGenerator3, createCellCenteredScalarGrid) {
 //    openvdb::DoubleGrid::Ptr grid = openvdb::DoubleGrid::create();

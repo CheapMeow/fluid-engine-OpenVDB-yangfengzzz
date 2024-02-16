@@ -125,7 +125,7 @@ private:
                       const openvdb::Vec3dGrid::Ptr f,
                       const vox::Size3 size,
                       const vox::Vector3D& c,
-                      uint component);
+                      unsigned int component);
 };
 
 //! Shared pointer type for the GridBackwardEulerDiffusionSolver3.

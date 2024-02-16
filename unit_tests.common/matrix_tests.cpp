@@ -7,7 +7,7 @@
 #include "../src.common/matrix.h"
 #include "../src.common/vector.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #include <iostream>
 

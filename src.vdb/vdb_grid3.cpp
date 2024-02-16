@@ -41,19 +41,19 @@ Grid3::DataPositionFunc Grid3::cellCenterPosition() const {
 }
 
 void Grid3::forEachCellIndex(
-                             const std::function<void(uint, uint, uint)>& func) const {
+                             const std::function<void(unsigned int, unsigned int, unsigned int)>& func) const {
     vox::serialFor(vox::kZeroSize, _resolution.x,
                    vox::kZeroSize, _resolution.y,
                    vox::kZeroSize, _resolution.z,
-                   [&func](uint i, uint j, uint k) { func(i, j, k); });
+                   [&func](unsigned int i, unsigned int j, unsigned int k) { func(i, j, k); });
 }
 
 void Grid3::parallelForEachCellIndex(
-                                     const std::function<void(uint, uint, uint)>& func) const {
+                                     const std::function<void(unsigned int, unsigned int, unsigned int)>& func) const {
     vox::parallelFor(vox::kZeroSize, _resolution.x,
                      vox::kZeroSize, _resolution.y,
                      vox::kZeroSize, _resolution.z,
-                     [&func](uint i, uint j, uint k) { func(i, j, k); });
+                     [&func](unsigned int i, unsigned int j, unsigned int k) { func(i, j, k); });
 }
 
 bool Grid3::hasSameShape(const Grid3& other) const {

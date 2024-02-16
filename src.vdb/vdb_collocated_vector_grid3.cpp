@@ -167,7 +167,7 @@ void CollocatedVectorGrid3::fill(const vox::Vector3D& value,
                      vox::kZeroSize, dataSize().x,
                      vox::kZeroSize, dataSize().y,
                      vox::kZeroSize, dataSize().z,
-                     [this, value](uint i, uint j, uint k) {
+                     [this, value](unsigned int i, unsigned int j, unsigned int k) {
         _grid->tree().setValueOnly(openvdb::Coord(i, j, k),
                                    openvdb::Vec3d(value.x,
                                                   value.y,
@@ -182,7 +182,7 @@ void CollocatedVectorGrid3::fill(
     vox::parallelFor(vox::kZeroSize, dataSize().x,
                      vox::kZeroSize, dataSize().y,
                      vox::kZeroSize, dataSize().z,
-                [this, &func, &pos](uint i, uint j, uint k) {
+                [this, &func, &pos](unsigned int i, unsigned int j, unsigned int k) {
         vox::Vector3D value = func(pos(openvdb::Coord(i, j, k)));
         _grid->tree().setValueOnly(openvdb::Coord(i, j, k),
                                    openvdb::Vec3d(value.x,

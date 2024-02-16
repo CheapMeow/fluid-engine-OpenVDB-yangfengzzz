@@ -9,7 +9,7 @@
 #include "../src.vdb/vdb_single_phase_pressure_solver3.hpp"
 #include "../src.vdb/vdb_helper.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 
@@ -19,9 +19,9 @@ TEST(GridSinglePhasePressureSolver3, SolveSinglePhase) {
     vel.fill(vox::Vector3D(),
              vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (j == 0 || j == 3) {
                     vel.vAccessor().setValue(openvdb::Coord(i, j, k), 0.0);
                 } else {
@@ -34,25 +34,25 @@ TEST(GridSinglePhasePressureSolver3, SolveSinglePhase) {
     SinglePhasePressureSolver3 solver;
     solver.solve(vel, 1.0, &vel);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 4; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 4; ++i) {
                 EXPECT_NEAR(0.0, vel.u(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.v(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 4; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 4; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.w(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
@@ -75,9 +75,9 @@ TEST(GridSinglePhasePressureSolver3, SolveSinglePhaseWithBoundary) {
     
     vel.fill(vox::Vector3D(), vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (j == 0 || j == 3) {
                     vel.vAccessor().setValue(openvdb::Coord(i, j, k), 0.0);
                 } else {
@@ -94,17 +94,17 @@ TEST(GridSinglePhasePressureSolver3, SolveSinglePhaseWithBoundary) {
     SinglePhasePressureSolver3 solver;
     solver.solve(vel, 1.0, &vel, boundarySdf);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 4; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 4; ++i) {
                 EXPECT_NEAR(0.0, vel.u(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (i == 2 && (j == 1 || j == 2)) {
                     EXPECT_NEAR(1.0, vel.v(openvdb::Coord(i, j, k)), 1e-6);
                 } else {
@@ -114,9 +114,9 @@ TEST(GridSinglePhasePressureSolver3, SolveSinglePhaseWithBoundary) {
         }
     }
     
-    for (uint k = 0; k < 4; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 4; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.w(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
@@ -139,9 +139,9 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurface) {
     
     vel.fill(vox::Vector3D(), vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (j == 0 || j == 3) {
                     vel.vAccessor().setValue(openvdb::Coord(i, j, k), 0.0);
                 } else {
@@ -158,25 +158,25 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurface) {
     solver.solve(vel, 1.0, &vel, vox::ConstantScalarField3(vox::kMaxD),
                  vox::ConstantVectorField3({0, 0, 0}), fluidSdf);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 4; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 4; ++i) {
                 EXPECT_NEAR(0.0, vel.u(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.v(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 4; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 4; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.w(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
@@ -199,9 +199,9 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurfaceCompressed) {
     
     vel.fill(vox::Vector3D(), vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (j == 0 || j == 3) {
                     vel.vAccessor().setValue(openvdb::Coord(i, j, k), 0.0);
                 } else {
@@ -218,25 +218,25 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurfaceCompressed) {
     solver.solve(vel, 1.0, &vel, vox::ConstantScalarField3(vox::kMaxD),
                  vox::ConstantVectorField3({0, 0, 0}), fluidSdf, true);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 4; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 4; ++i) {
                 EXPECT_NEAR(0.0, vel.u(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.v(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 4; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 4; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.w(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
@@ -260,9 +260,9 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurfaceWithBoundary) {
     
     vel.fill(vox::Vector3D(), vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (j == 0 || j == 3) {
                     vel.vAccessor().setValue(openvdb::Coord(i, j, k), 0.0);
                 } else {
@@ -282,17 +282,17 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurfaceWithBoundary) {
     solver.solve(vel, 1.0, &vel, boundarySdf, vox::ConstantVectorField3({0, 0, 0}),
                  fluidSdf);
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 4; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 4; ++i) {
                 EXPECT_NEAR(0.0, vel.u(openvdb::Coord(i, j, k)), 1e-6);
             }
         }
     }
     
-    for (uint k = 0; k < 3; ++k) {
-        for (uint j = 0; j < 4; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 3; ++k) {
+        for (unsigned int j = 0; j < 4; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 if (i == 2 && (j == 1 || j == 2)) {
                     EXPECT_NEAR(1.0, vel.v(openvdb::Coord(i, j, k)), 1e-6);
                 } else {
@@ -302,9 +302,9 @@ TEST(GridSinglePhasePressureSolver3, SolveFreeSurfaceWithBoundary) {
         }
     }
     
-    for (uint k = 0; k < 4; ++k) {
-        for (uint j = 0; j < 3; ++j) {
-            for (uint i = 0; i < 3; ++i) {
+    for (unsigned int k = 0; k < 4; ++k) {
+        for (unsigned int j = 0; j < 3; ++j) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 EXPECT_NEAR(0.0, vel.w(openvdb::Coord(i, j, k)), 1e-6);
             }
         }

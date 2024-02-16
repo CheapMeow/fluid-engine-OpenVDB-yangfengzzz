@@ -13,7 +13,7 @@
 #include <vector>
 #include <iterator>
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

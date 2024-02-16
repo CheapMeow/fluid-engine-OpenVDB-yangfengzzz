@@ -148,7 +148,7 @@ void ScalarGrid3::fill(double value, vox::ExecutionPolicy policy) {
                      vox::kZeroSize, dataSize().x,
                      vox::kZeroSize, dataSize().y,
                      vox::kZeroSize, dataSize().z,
-                     [this, value](uint i, uint j, uint k) {
+                     [this, value](unsigned int i, unsigned int j, unsigned int k) {
         _grid->tree().setValueOnly(openvdb::Coord(i, j, k), value);
     }, policy);
 }
@@ -159,7 +159,7 @@ void ScalarGrid3::fill(const std::function<double(const vox::Vector3D&)>& func,
     vox::parallelFor(vox::kZeroSize, dataSize().x,
                      vox::kZeroSize, dataSize().y,
                      vox::kZeroSize, dataSize().z,
-                     [this, &func, &pos](uint i, uint j, uint k) {
+                     [this, &func, &pos](unsigned int i, unsigned int j, unsigned int k) {
         _grid->tree().setValueOnly(openvdb::Coord(i, j, k), func(pos(openvdb::Coord(i, j, k))));
     }, policy);
 }
@@ -214,7 +214,7 @@ void ScalarGrid3::getData(vox::ArrayAccessor3<double> data) const {
                    vox::kZeroSize, dataSize().x,
                    vox::kZeroSize, dataSize().y,
                    vox::kZeroSize, dataSize().z,
-                   [&](uint i, uint j, uint k) {
+                   [&](unsigned int i, unsigned int j, unsigned int k) {
         data(i, j, k) = _grid->tree().getValue(openvdb::Coord(i, j, k) );
     });
 }
@@ -226,7 +226,7 @@ void ScalarGrid3::setData(const vox::ConstArrayAccessor3<double> data) {
                    vox::kZeroSize, dataSize().x,
                    vox::kZeroSize, dataSize().y,
                    vox::kZeroSize, dataSize().z,
-                   [&](uint i, uint j, uint k) {
+                   [&](unsigned int i, unsigned int j, unsigned int k) {
         _grid->tree().setValueOnly(openvdb::Coord(i, j, k), data(i, j, k) );
     });
 }

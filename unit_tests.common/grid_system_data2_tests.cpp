@@ -10,7 +10,7 @@
 #include "../src.common/vertex_centered_vector_grid2.h"
 #include "../src.common/grid_system_data2.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vox;

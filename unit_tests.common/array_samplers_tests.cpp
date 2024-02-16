@@ -11,7 +11,7 @@
 #include "../src.common/array_samplers2.h"
 #include "../src.common/array_samplers3.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

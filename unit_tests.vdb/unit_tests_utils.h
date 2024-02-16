@@ -9,7 +9,7 @@
 
 #include "../src.common/vector2.h"
 #include <openvdb/openvdb.h>
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #define EXPECT_VECTOR2_EQ(expected, actual)     \
     EXPECT_DOUBLE_EQ((expected).x, (actual).x); \

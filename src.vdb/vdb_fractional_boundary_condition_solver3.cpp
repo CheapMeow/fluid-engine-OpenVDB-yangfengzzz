@@ -257,15 +257,15 @@ void FractionalBoundaryConditionSolver3::constrainVelocity(
     });
     
     if (closedDomainBoundaryFlag() & vox::kDirectionLeft) {
-        for (uint k = 0; k < velocity->uSize().z; ++k) {
-            for (uint j = 0; j < velocity->uSize().y; ++j) {
+        for (unsigned int k = 0; k < velocity->uSize().z; ++k) {
+            for (unsigned int j = 0; j < velocity->uSize().y; ++j) {
                 velocity->getUGrid()->tree().setValueOnly(openvdb::Coord(0, j, k), 0);
             }
         }
     }
     if (closedDomainBoundaryFlag() & vox::kDirectionRight) {
-        for (uint k = 0; k < velocity->uSize().z; ++k) {
-            for (uint j = 0; j < velocity->uSize().y; ++j) {
+        for (unsigned int k = 0; k < velocity->uSize().z; ++k) {
+            for (unsigned int j = 0; j < velocity->uSize().y; ++j) {
                 velocity->getUGrid()->tree().setValueOnly(openvdb::Coord((int)velocity->uSize().x - 1,
                                                                          j, k),
                                                           0);
@@ -273,8 +273,8 @@ void FractionalBoundaryConditionSolver3::constrainVelocity(
         }
     }
     if (closedDomainBoundaryFlag() & vox::kDirectionDown) {
-        for (uint k = 0; k < velocity->vSize().z; ++k) {
-            for (uint i = 0; i < velocity->vSize().x; ++i) {
+        for (unsigned int k = 0; k < velocity->vSize().z; ++k) {
+            for (unsigned int i = 0; i < velocity->vSize().x; ++i) {
                 velocity->getVGrid()->tree().setValueOnly(openvdb::Coord(i,
                                                                          0, k),
                                                           0);
@@ -282,8 +282,8 @@ void FractionalBoundaryConditionSolver3::constrainVelocity(
         }
     }
     if (closedDomainBoundaryFlag() & vox::kDirectionUp) {
-        for (uint k = 0; k < velocity->vSize().z; ++k) {
-            for (uint i = 0; i < velocity->vSize().x; ++i) {
+        for (unsigned int k = 0; k < velocity->vSize().z; ++k) {
+            for (unsigned int i = 0; i < velocity->vSize().x; ++i) {
                 velocity->getVGrid()->tree().setValueOnly(openvdb::Coord(i,
                                                                          (int)velocity->vSize().y - 1,
                                                                          k),
@@ -292,8 +292,8 @@ void FractionalBoundaryConditionSolver3::constrainVelocity(
         }
     }
     if (closedDomainBoundaryFlag() & vox::kDirectionBack) {
-        for (uint j = 0; j < velocity->wSize().y; ++j) {
-            for (uint i = 0; i < velocity->wSize().x; ++i) {
+        for (unsigned int j = 0; j < velocity->wSize().y; ++j) {
+            for (unsigned int i = 0; i < velocity->wSize().x; ++i) {
                 velocity->getWGrid()->tree().setValueOnly(openvdb::Coord(i,
                                                                          j, 0),
                                                           0);
@@ -301,8 +301,8 @@ void FractionalBoundaryConditionSolver3::constrainVelocity(
         }
     }
     if (closedDomainBoundaryFlag() & vox::kDirectionFront) {
-        for (uint j = 0; j < velocity->wSize().y; ++j) {
-            for (uint i = 0; i < velocity->wSize().x; ++i) {
+        for (unsigned int j = 0; j < velocity->wSize().y; ++j) {
+            for (unsigned int i = 0; i < velocity->wSize().x; ++i) {
                 velocity->getWGrid()->tree().setValueOnly(openvdb::Coord(i, j,
                                                                          (int)velocity->wSize().z - 1),
                                                           0);

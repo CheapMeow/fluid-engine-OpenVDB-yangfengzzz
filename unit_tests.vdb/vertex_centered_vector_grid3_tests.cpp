@@ -7,7 +7,7 @@
 #include "../src.vdb/vdb_vertex_centered_vector_grid3.h"
 #include "../src.vdb/vdb_math_utils.h"
 #include "../src.vdb/vdb_helper.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <vector>
 
 using namespace vdb;
@@ -294,9 +294,9 @@ TEST(VertexCenteredVectorGrid3, Fill) {
     grid.fill(vox::Vector3D(42.0, 27.0, 31.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 EXPECT_DOUBLE_EQ(42.0, grid(openvdb::Coord(i, j, k)).x());
                 EXPECT_DOUBLE_EQ(27.0, grid(openvdb::Coord(i, j, k)).y());
                 EXPECT_DOUBLE_EQ(31.0, grid(openvdb::Coord(i, j, k)).z());
@@ -313,9 +313,9 @@ TEST(VertexCenteredVectorGrid3, Fill) {
     };
     grid.fill(func, vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.dataSize().z; ++k) {
-        for (uint j = 0; j < grid.dataSize().y; ++j) {
-            for (uint i = 0; i < grid.dataSize().x; ++i) {
+    for (unsigned int k = 0; k < grid.dataSize().z; ++k) {
+        for (unsigned int j = 0; j < grid.dataSize().y; ++j) {
+            for (unsigned int i = 0; i < grid.dataSize().x; ++i) {
                 if (i < 3) {
                     EXPECT_DOUBLE_EQ(2.0, grid(openvdb::Coord(i, j, k)).x());
                     EXPECT_DOUBLE_EQ(3.0, grid(openvdb::Coord(i, j, k)).y());
@@ -336,9 +336,9 @@ TEST(VertexCenteredVectorGrid3, DivergenceAtDataPoint) {
     grid.fill(vox::Vector3D(1.0, -2.0, 3.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 EXPECT_DOUBLE_EQ(0.0, grid.divergenceAtDataPoint(openvdb::Coord(i, j, k)));
             }
         }
@@ -347,9 +347,9 @@ TEST(VertexCenteredVectorGrid3, DivergenceAtDataPoint) {
     grid.fill([](const vox::Vector3D& x) { return x; },
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 1; k < grid.resolution().z - 1; ++k) {
-        for (uint j = 1; j < grid.resolution().y - 1; ++j) {
-            for (uint i = 1; i < grid.resolution().x - 1; ++i) {
+    for (unsigned int k = 1; k < grid.resolution().z - 1; ++k) {
+        for (unsigned int j = 1; j < grid.resolution().y - 1; ++j) {
+            for (unsigned int i = 1; i < grid.resolution().x - 1; ++i) {
                 EXPECT_DOUBLE_EQ(3.0, grid.divergenceAtDataPoint(openvdb::Coord(i, j, k)));
             }
         }
@@ -362,9 +362,9 @@ TEST(VertexCenteredVectorGrid3, CurlAtDataPoint) {
     grid.fill(vox::Vector3D(1.0, -2.0, 3.0),
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 0; k < grid.resolution().z; ++k) {
-        for (uint j = 0; j < grid.resolution().y; ++j) {
-            for (uint i = 0; i < grid.resolution().x; ++i) {
+    for (unsigned int k = 0; k < grid.resolution().z; ++k) {
+        for (unsigned int j = 0; j < grid.resolution().y; ++j) {
+            for (unsigned int i = 0; i < grid.resolution().x; ++i) {
                 vox::Vector3D curl = grid.curlAtDataPoint(openvdb::Coord(i, j, k));
                 EXPECT_DOUBLE_EQ(0.0, curl.x);
                 EXPECT_DOUBLE_EQ(0.0, curl.y);
@@ -376,9 +376,9 @@ TEST(VertexCenteredVectorGrid3, CurlAtDataPoint) {
     grid.fill([](const vox::Vector3D& x) { return vox::Vector3D(x.y, x.z, x.x); },
               vox::ExecutionPolicy::kSerial);
     
-    for (uint k = 1; k < grid.resolution().z - 1; ++k) {
-        for (uint j = 1; j < grid.resolution().y - 1; ++j) {
-            for (uint i = 1; i < grid.resolution().x - 1; ++i) {
+    for (unsigned int k = 1; k < grid.resolution().z - 1; ++k) {
+        for (unsigned int j = 1; j < grid.resolution().y - 1; ++j) {
+            for (unsigned int i = 1; i < grid.resolution().x - 1; ++i) {
                 vox::Vector3D curl = grid.curlAtDataPoint(openvdb::Coord(i, j, k));
                 EXPECT_DOUBLE_EQ(-1.0, curl.x);
                 EXPECT_DOUBLE_EQ(-1.0, curl.y);

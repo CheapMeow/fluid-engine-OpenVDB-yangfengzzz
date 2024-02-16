@@ -7,7 +7,7 @@
 #include "../src.common/matrix_mxn.h"
 #include "../src.common/mg.h"
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

@@ -11,7 +11,7 @@
 #include "../src.vdb/vdb_helper.h"
 #include <openvdb/tools/MultiResGrid.h>
 
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 using namespace vdb;
 

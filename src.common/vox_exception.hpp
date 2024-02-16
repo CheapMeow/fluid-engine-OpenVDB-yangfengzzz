@@ -238,7 +238,7 @@ private:
     /// Private constructor, no construction
     ExceptionFactory() {}
 public:
-    static __attribute__((noreturn)) void throwException(
+    static void throwException(
                                                          Exception::ExceptionCodes code, int number,
                                                          const std::string& desc,
                                                          const std::string& src, const char* file, long line)

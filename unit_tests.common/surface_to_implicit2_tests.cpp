@@ -9,8 +9,8 @@
 #include "../src.common/surface_set2.h"
 #include "../src.common/surface_to_implicit2.h"
 
-#include "../external/gmock/include/gmock/gmock.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 using namespace vox;
 

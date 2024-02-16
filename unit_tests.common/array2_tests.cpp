@@ -5,7 +5,7 @@
 // property of any third parties.
 
 #include "../src.common/array2.h"
-#include "../external/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include <sstream>
 
 using namespace vox;

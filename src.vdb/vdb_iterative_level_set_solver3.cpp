@@ -36,7 +36,7 @@ void IterativeLevelSetSolver3::reinitialize(
     
     vox::Array3<double> output(size);
     vox::ArrayAccessor3<double> outputAcc = output.accessor();
-    outputAcc.parallelForEachIndex([&](uint i, uint j, uint k){
+    outputAcc.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k){
         outputAcc(i, j, k) = inputSdf.getGrid()->tree().getValue(openvdb::Coord(i, j, k));
     });
     
@@ -52,7 +52,7 @@ void IterativeLevelSetSolver3::reinitialize(
     << " numberOfIterations: " << numberOfIterations;
     
     for (unsigned int n = 0; n < numberOfIterations; ++n) {
-        output.parallelForEachIndex([&](uint i, uint j, uint k) {
+        output.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
             double s = sign(output, gridSpacing, i, j, k);
             
             std::array<double, 2> dx, dy, dz;
@@ -83,7 +83,7 @@ void IterativeLevelSetSolver3::reinitialize(
         std::swap(temp, output);
     }
     
-    outputAcc.forEachIndex([&](uint i, uint j, uint k){
+    outputAcc.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k){
         outputSdf->getGrid()->tree().setValueOnly(openvdb::Coord(i, j, k),
                                                   outputAcc(i, j, k));
     });
@@ -98,7 +98,7 @@ void IterativeLevelSetSolver3::extrapolate(
     
     vox::Array3<double> sdfGrid(input.dataSize());
     auto pos = input.dataPosition();
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfGrid(i, j, k) = sdf.sample(pos(openvdb::Coord(i, j, k)));
     });
     
@@ -115,7 +115,7 @@ void IterativeLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     
     vox::Array3<double> sdfGrid(input.dataSize());
     auto pos = input.dataPosition();
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfGrid(i, j, k) = sdf.sample(pos(openvdb::Coord(i, j, k)));
     });
     
@@ -134,7 +134,7 @@ void IterativeLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     openvdb::DoubleGrid::Ptr w0 = openvdb::DoubleGrid::create(0.0);
     w0->topologyUnion(*input.getGrid());
     
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         u->tree().setValueOnly(coord, input.getGrid()->tree().getValue(coord).x());
         v->tree().setValueOnly(coord, input.getGrid()->tree().getValue(coord).y());
@@ -147,7 +147,7 @@ void IterativeLevelSetSolver3::extrapolate(const CollocatedVectorGrid3& input,
     
     extrapolate(w, sdfGrid, gridSpacing, maxDistance, w0);
     
-    sdfGrid.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfGrid.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         openvdb::Coord coord(i, j, k);
         output->getGrid()->tree().setValueOnly(coord,
                                                openvdb::Vec3d(u->tree().getValue(coord),
@@ -166,7 +166,7 @@ void IterativeLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     
     vox::Array3<double> sdfAtU(input.uSize());
     auto uPos = input.uPosition();
-    sdfAtU.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtU.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtU(i, j, k) = sdf.sample(uPos(openvdb::Coord(i, j, k)));
     });
     
@@ -176,7 +176,7 @@ void IterativeLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     
     auto vPos = input.vPosition();
     vox::Array3<double> sdfAtV(input.vSize());
-    sdfAtV.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtV.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtV(i, j, k) = sdf.sample(vPos(openvdb::Coord(i, j, k)));
     });
     
@@ -186,7 +186,7 @@ void IterativeLevelSetSolver3::extrapolate(const FaceCenteredGrid3& input,
     
     auto wPos = input.wPosition();
     vox::Array3<double> sdfAtW(input.wSize());
-    sdfAtW.parallelForEachIndex([&](uint i, uint j, uint k) {
+    sdfAtW.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k) {
         sdfAtW(i, j, k) = sdf.sample(wPos(openvdb::Coord(i, j, k)));
     });
     
@@ -205,7 +205,7 @@ void IterativeLevelSetSolver3::extrapolate(
     
     vox::Array3<double> outputArray(size);
     vox::ArrayAccessor3<double> outputAcc = outputArray.accessor();
-    outputAcc.parallelForEachIndex([&](uint i, uint j, uint k){
+    outputAcc.parallelForEachIndex([&](unsigned int i, unsigned int j, unsigned int k){
         outputAcc(i, j, k) = input->tree().getValue(openvdb::Coord(i, j, k));
     });
     
@@ -221,7 +221,7 @@ void IterativeLevelSetSolver3::extrapolate(
                          vox::kZeroSize, size.x,
                          vox::kZeroSize, size.y,
                          vox::kZeroSize, size.z,
-                         [&](uint i, uint j, uint k) {
+                         [&](unsigned int i, unsigned int j, unsigned int k) {
             if (sdf(i, j, k) >= 0) {
                 std::array<double, 2> dx, dy, dz;
                 vox::Vector3D grad = gradient3(sdf, gridSpacing,
@@ -245,7 +245,7 @@ void IterativeLevelSetSolver3::extrapolate(
         std::swap(tempAcc, outputAcc);
     }
     
-    outputAcc.forEachIndex([&](uint i, uint j, uint k){
+    outputAcc.forEachIndex([&](unsigned int i, unsigned int j, unsigned int k){
         output->tree().setValueOnly(openvdb::Coord(i, j, k),
                                     outputAcc(i, j, k));
     });
@@ -268,9 +268,9 @@ unsigned int IterativeLevelSetSolver3::distanceToNumberOfIterations(
 double IterativeLevelSetSolver3::sign(
                                       const vox::ConstArrayAccessor3<double>& sdf,
                                       const vox::Vector3D& gridSpacing,
-                                      uint i,
-                                      uint j,
-                                      uint k) {
+                                      unsigned int i,
+                                      unsigned int j,
+                                      unsigned int k) {
     double d = sdf(i, j, k);
     double e = vox::min3(gridSpacing.x, gridSpacing.y, gridSpacing.z);
     return d / std::sqrt(d * d + e * e);
@@ -286,9 +286,9 @@ double IterativeLevelSetSolver3::pseudoTimeStep(
     double maxS = -std::numeric_limits<double>::max();
     double dtau = _maxCfl * h;
     
-    for (uint k = 0; k < size.z; ++k) {
-        for (uint j = 0; j < size.y; ++j) {
-            for (uint i = 0; i < size.x; ++i) {
+    for (unsigned int k = 0; k < size.z; ++k) {
+        for (unsigned int j = 0; j < size.y; ++j) {
+            for (unsigned int i = 0; i < size.x; ++i) {
                 double s = sign(sdf, gridSpacing, i, j, k);
                 maxS = std::max(s, maxS);
             }
