@@ -31,6 +31,3 @@ Specific modification
 7. Building bat.
 
     Vcpkg path should be adapted to personal env.
-
-8. 
-
