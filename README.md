@@ -33,7 +33,9 @@
 In my testing project `MyTest`, I choose FlipSolver3 to test efficiency of OpenVDB, but the result shows that method with OpenVDB is much slower. How does it happen?
 
 Build type: Release
+
 CPU: AMD Ryzen 7 4800H with Radeon Graphics 2.90 GHz
+
 Particles number: 875619
 
 |Steps|Original Method|VDB Method|
