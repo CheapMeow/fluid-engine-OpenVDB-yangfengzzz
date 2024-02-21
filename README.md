@@ -1,8 +1,4 @@
-Fork and adapt to Windows build.
-
-[https://github.com/yangfengzzz/fluid-engine-OpenVDB](https://github.com/yangfengzzz/fluid-engine-OpenVDB)
-
-Specific modification
+# Modification
 
 1. Use cmake menifest mode to install dependencied. 
 
@@ -31,3 +27,21 @@ Specific modification
 7. Building bat.
 
     Vcpkg path should be adapted to personal env.
+
+# Test Result
+
+In my testing project `MyTest`, I choose FlipSolver3 to test efficiency of OpenVDB, but the result shows that method with OpenVDB is much slower. How does it happen?
+
+Build type: Release
+CPU: AMD Ryzen 7 4800H with Radeon Graphics 2.90 GHz
+Particles number: 875619
+
+|Steps|Original Method|VDB Method|
+|:-:|:-:|:-:|
+|transferFromParticlesToGrids|0.12778|1.09503|
+|buildSignedDistanceField|0.138452|1.26094|
+|Computing pressure|0.465408|0.764281|
+|moveParticles|0.265097|0.456756|
+|Computing advection|0.424833|0.812436|
+|Other|…|…|
+|Total|1.5621|5.39702|

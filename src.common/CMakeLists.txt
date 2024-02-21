@@ -14,5 +14,4 @@ ADD_LIBRARY(Flex_Common STATIC ${DIR_SRCS})
 target_link_libraries(Flex_Common glog::glog TBB::tbb)
 # target_include_directories(Flex_Common PUBLIC ${Tbb_INCLUDE_DIRS})
 
-# 设置默认打开VCPKG
 # set_target_properties(Flex_Common PROPERTIES VS_GLOBAL_VcpkgEnabled true)
