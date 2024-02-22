@@ -36,6 +36,8 @@ Build type: Release
 
 CPU: AMD Ryzen 7 4800H with Radeon Graphics 2.90 GHz
 
+Case: Dam breaking with colliders
+
 Particles number: 875619
 
 |Steps|Original Method|VDB Method|
